@@ -4,8 +4,8 @@ public partial class TestClassDiagnosable
 {
     public new bool TestProperty
     {
-        get => ObjectDiagnose.GetCurrentMemberValue(base.TestProperty);
-        set => ObjectDiagnose.SetOriginalMemberValue(SetCurrentInputValueOfTestProperty, value);
+        get => ObjectDiagnose.GetCurrentOutputMemberValue(base.TestProperty);
+        set => ObjectDiagnose.SetOriginalInputMemberValue(SetCurrentInputValueOfTestProperty, value);
     }
 
     private bool GetOriginalOutputValueOfTestProperty() => 

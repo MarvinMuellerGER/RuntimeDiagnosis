@@ -44,14 +44,14 @@ public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
         [CallerMemberName] string memberName = "") =>
         GetMemberDiagnose(memberName) as MemberDiagnose<TOwnerType, TMemberValueType?>;
     
-    public TMemberValueType? GetCurrentMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
+    public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
         [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType>(memberName);
         return memberDiagnose == null ? internalProperty : memberDiagnose.OutputValue.CurrentValue.Value;
     }
     
-    public void SetOriginalMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue, 
+    public void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue, 
         in TMemberValueType? value, [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType?>(memberName);

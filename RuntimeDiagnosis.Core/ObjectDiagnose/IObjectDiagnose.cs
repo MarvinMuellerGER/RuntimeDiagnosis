@@ -11,9 +11,9 @@ public interface IObjectDiagnose
     string GetOwnerTypeString();
     IMemberDiagnose? GetMemberDiagnose([CallerMemberName] string memberName = "");
     IMemberDiagnose<TMemberValueType?>? GetMemberDiagnose<TMemberValueType>([CallerMemberName] string memberName = "");
-    TMemberValueType? GetCurrentMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
+    TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
         [CallerMemberName] string memberName = "");
-    void SetOriginalMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue,
+    void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue,
         in TMemberValueType? value, [CallerMemberName] string memberName = "");
     void AddMember<TMemberValueType>(
         in string memberName,
