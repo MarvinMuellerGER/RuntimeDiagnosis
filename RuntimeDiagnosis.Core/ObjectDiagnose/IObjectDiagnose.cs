@@ -25,6 +25,6 @@ public interface IObjectDiagnose<TOwnerType> : IObjectDiagnose
     where TOwnerType : IDiagnosableObject
 {
     new TOwnerType Owner { get; }
-    new MemberDiagnose<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
+    new IMemberDiagnose<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
         [CallerMemberName] string memberName = "");
 }

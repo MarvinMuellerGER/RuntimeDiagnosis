@@ -40,7 +40,7 @@ public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
         string memberName) where TMemberValueType : default =>
         GetMemberDiagnose(memberName) as IMemberDiagnose<TMemberValueType?>;
 
-    public MemberDiagnose<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
+    public IMemberDiagnose<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
         [CallerMemberName] string memberName = "") =>
         GetMemberDiagnose(memberName) as MemberDiagnose<TOwnerType, TMemberValueType?>;
     
