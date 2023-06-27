@@ -5,20 +5,12 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnose;
 
 public interface IObjectDiagnose
 {
-    object Owner { get; }
-    List<IMemberDiagnose> MemberDiagnoses { get; }
+    IDiagnosableObject Owner { get; }
+    IEnumerable<IMemberDiagnose> MemberDiagnoses { get; }
     Type OwnerBaseType { get; }
     string GetOwnerTypeString();
     IMemberDiagnose? GetMemberDiagnose([CallerMemberName] string memberName = "");
     IMemberDiagnose<TMemberValueType?>? GetMemberDiagnose<TMemberValueType>([CallerMemberName] string memberName = "");
-    TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
-        [CallerMemberName] string memberName = "");
-    void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue,
-        in TMemberValueType? value, [CallerMemberName] string memberName = "");
-    void AddMember<TMemberValueType>(
-        in string memberName,
-        Func<TMemberValueType?> getMemberInputValue,
-        Action<TMemberValueType?> setMemberInputValue);
 }
 
 public interface IObjectDiagnose<TOwnerType> : IObjectDiagnose

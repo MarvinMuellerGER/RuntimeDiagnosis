@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
+using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
@@ -28,14 +28,17 @@ public class MemberDiagnose<TOwnerType, TMemberValueType> : IMemberDiagnose<TOwn
 
     public IOutputValue<TOwnerType, TMemberValueType?> OutputValue { get; }
 
-    private event EventHandler? OriginalOutputValueMightChanged
-    {
-        add => InputValue.CurrentValue.ValueChangedUnified += value;
-        remove => InputValue.CurrentValue.ValueChangedUnified -= value;
-    }
+    IEnumerable<IDirectionValue> IMemberDiagnose.DirectionValues => DirectionValues;
+    
+    IEnumerable<IDirectionValue<TMemberValueType?>> IMemberDiagnose<TMemberValueType?>.DirectionValues => 
+        DirectionValues;
+
+    public IEnumerable<IDirectionValue<TOwnerType, TMemberValueType?>> DirectionValues { get; }
 
     public MemberDiagnose(in IObjectDiagnose<TOwnerType> objectDiagnose,
-        in string memberName, 
+        in string memberName,
+        IEnumerable<DirectionValueDefinition> inputCallerDefinitions,
+        IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
         Action<IMemberDiagnose> invokeOwnerPropertyChanged,
         Func<TMemberValueType?> getOriginalOutputValue,
         Action<TMemberValueType?> setCurrentInputValue)
@@ -43,11 +46,14 @@ public class MemberDiagnose<TOwnerType, TMemberValueType> : IMemberDiagnose<TOwn
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
         ObjectDiagnose = objectDiagnose;
         MemberName = memberName;
-        InputValue = new InputValue<TOwnerType, TMemberValueType?>(this, setCurrentInputValue);
-        OutputValue = new OutputValue<TOwnerType, TMemberValueType?>(this, InvokeOwnerPropertyChanged,
+        InputValue = new InputValue<TOwnerType, TMemberValueType?>(
+            this, inputCallerDefinitions, setCurrentInputValue);
+        OutputValue = new OutputValue<TOwnerType, TMemberValueType?>(
+            this, outputCallerDefinitions, InvokeOwnerPropertyChanged,
             getOriginalOutputValue,
-            originalOutputValueMightChangedHandler => 
-                OriginalOutputValueMightChanged += originalOutputValueMightChangedHandler);
+            inputValueChanged => 
+                InputValue.CurrentValue.ValueChangedUnified += inputValueChanged);
+        DirectionValues = new IDirectionValue<TOwnerType, TMemberValueType?>[] { InputValue, OutputValue };
     }
     
     public override string ToString() =>

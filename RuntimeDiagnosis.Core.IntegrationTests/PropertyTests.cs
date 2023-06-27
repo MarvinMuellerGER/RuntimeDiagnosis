@@ -1,4 +1,4 @@
-using RuntimeDiagnosis.Core.IntegrationTests.Testee;
+using RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests;
 
@@ -215,6 +215,7 @@ public class PropertyTests
             Assert.That(_testee.TestProperty, Is.False);
         });
     }
+    
     [Test]
     public void Test_InputAndOutputDiagnoseAtTheSameTime()
     {

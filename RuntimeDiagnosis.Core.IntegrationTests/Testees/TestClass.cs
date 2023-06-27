@@ -1,4 +1,4 @@
-﻿namespace RuntimeDiagnosis.Core.IntegrationTests.Testee;
+﻿namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 public class TestClass
 {

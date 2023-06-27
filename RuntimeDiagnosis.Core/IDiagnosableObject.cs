@@ -5,5 +5,11 @@ namespace RuntimeDiagnosis.Core;
 
 public interface IDiagnosableObject : INotifyPropertyChanged
 {
-    public ObjectDiagnose<IDiagnosableObject> ObjectDiagnose { get; }
+    public IObjectDiagnose ObjectDiagnose { get; }
+}
+
+public interface IDiagnosableObject<TOwnerType> : IDiagnosableObject 
+    where TOwnerType : IDiagnosableObject
+{
+    public new IObjectDiagnose<TOwnerType> ObjectDiagnose { get; }
 }

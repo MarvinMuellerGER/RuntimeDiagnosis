@@ -1,3 +1,4 @@
+using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
 using static RuntimeDiagnosis.Kit.EventAttacher;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
@@ -8,31 +9,56 @@ public sealed class OutputValue<TOwnerType, TMemberValueType> :
 {
     private readonly Action _invokeOwnerPropertyChanged;
     private readonly Func<TMemberValueType?> _getOriginalValue;
+
+    TMemberValueType? IOutputValue<TMemberValueType?>.Value
+    {
+        get
+        {
+            InvokeJustCalled();
+            UpdateValue();
+            return CurrentValue.Value;
+        }
+    }
+
+    public bool UpdateWhenInputValueChanged { get; set; } = true;
     
-    public OutputValue(IMemberDiagnose<TOwnerType, TMemberValueType?> memberDiagnose,
+    public bool UpdateOriginalValueWhenDiagnosisActive { get; set; } = true;
+
+    public OutputValue(IMemberDiagnose<TOwnerType, TMemberValueType?> memberDiagnose, 
+        IEnumerable<DirectionValueDefinition> callerDefinitions,
         Action invokeOwnerPropertyChanged,
         Func<TMemberValueType?> getOriginalOutputValue,
-        Action<EventHandler> attachToOriginalValueMightChanged) :
-        base(memberDiagnose)
+        Action<EventHandler> attachToInputValueChanged) :
+        base(memberDiagnose, callerDefinitions)
     {
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
         _getOriginalValue = getOriginalOutputValue;
 
-        AttachEventHandlers(attachToOriginalValueMightChanged);
+        AttachEventHandlers(attachToInputValueChanged);
     }
     
-    private void AttachEventHandlers(Action<EventHandler> attachToOriginalValueMightChanged)
+    private void AttachEventHandlers(Action<EventHandler> attachToInputValueChanged)
     {
-        AttachToOriginalValueMightChanged(attachToOriginalValueMightChanged);
+        AttachToInputValueChanged(attachToInputValueChanged);
         
         CurrentValue.ValueChangedUnified += OnCurrentValueChanged;
     }
 
-    private void AttachToOriginalValueMightChanged(Action<EventHandler> attachToOriginalValueMightChanged) =>
-        AttachToEvent(attachToOriginalValueMightChanged, OnOriginalValueMightChanged);
+    private void AttachToInputValueChanged(Action<EventHandler> attachToInputValueChanged) =>
+        AttachToEvent(attachToInputValueChanged, OnInputValueChanged);
 
-    private void OnOriginalValueMightChanged(object? sender, EventArgs _) =>
-        OriginalValueInternal.Value = _getOriginalValue();
+    private void OnInputValueChanged(object? sender, EventArgs _)
+    {
+        if (UpdateWhenInputValueChanged)
+            UpdateValue();
+    }
 
     private void OnCurrentValueChanged(object? sender, EventArgs e) => _invokeOwnerPropertyChanged();
+    
+    private void UpdateValue()
+    {
+        if (DiagnoseActive.Value && !UpdateOriginalValueWhenDiagnosisActive)
+            return;
+        OriginalValueInternal.Value = _getOriginalValue();
+    }
 }

@@ -7,16 +7,17 @@ public interface ISingleValue : IProvidesCurrentValueString, INotifyPropertyChan
     string Name { get; }
     IDirectionValue DirectionValue { get; }
     object? Value { get; }
-    ushort SetCount { get; }
+    ushort GetCalledCount { get; }
+    ushort SetCalledCount { get; }
+    ushort ChangedCount { get; }
     event EventHandler<object?>? ValueChanged;
     event EventHandler? ValueChangedUnified;
-    event EventHandler<ushort>? SetCountChanged;
     string ToString();
 }
 
 public interface ISingleValue<TValueType> : ISingleValue
 {
-    new TValueType? Value { get; }
+    new TValueType? Value { get; internal set; }
     new event EventHandler<TValueType?>? ValueChanged;
     bool Equals(ISingleValue<TValueType?>? other);
     bool Equals(TValueType? value);

@@ -6,12 +6,21 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
 public interface IDirectionValue : 
     IProvidesNameWithoutGenericArity, IProvidesCurrentValueString, IEquatable<IDirectionValue?>
 {
+    enum ValueDirectionType
+    {
+        Input,
+        Output
+    }
+    ValueDirectionType ValueDirection { get; }
     IMemberDiagnose MemberDiagnose { get; }
-    List<IDirectionValue> Connections { get; }
+    IEnumerable<IDirectionValue> Callers { get; }
+    IDirectionValue? LastCaller { get; }
     ISingleValueAlwaysEditable<bool> DiagnoseActive { get; }
     ISingleValue OriginalValue { get; }
     ISingleValueEditable DiagnoseValue { get; }
     ISingleValue CurrentValue { get; }
+    delegate void JustCalledEventHandler(IDirectionValue sender, IDirectionValue? caller);
+    event JustCalledEventHandler? JustCalled;
     bool SetDiagnoseValueAgain();
 }
 

@@ -1,27 +1,27 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnose;
-
+ 
 [DebuggerDisplay("{ToString()}")]
 public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
     where TOwnerType : IDiagnosableObject
 {
     private readonly Action<string> _invokeOwnerPropertyChanged;
-    
-    object IObjectDiagnose.Owner => Owner;
+
+    IDiagnosableObject IObjectDiagnose.Owner => Owner;
     
     public TOwnerType Owner { get; }
 
     public Type OwnerBaseType => Owner.GetType().BaseType ?? Owner.GetType();
 
     [DebuggerDisplay($"{nameof(MemberDiagnoses)} for {{GetOwnerTypeString()}}")]
-    public List<IMemberDiagnose> MemberDiagnoses { get; } = new();
+    public IEnumerable<IMemberDiagnose> MemberDiagnoses { get; internal set; } = null!;
 
-    public ObjectDiagnose(TOwnerType owner, Action<string> invokePropertyChanged)
+    internal ObjectDiagnose(TOwnerType owner, Action<string> invokePropertyChanged)
     {
         _invokeOwnerPropertyChanged = invokePropertyChanged;
         Owner = owner;
@@ -44,11 +44,12 @@ public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
         [CallerMemberName] string memberName = "") =>
         GetMemberDiagnose(memberName) as MemberDiagnose<TOwnerType, TMemberValueType?>;
     
-    public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(in TMemberValueType? internalProperty,
+    public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(
+        in Func<TMemberValueType?> getMemberValue,
         [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType>(memberName);
-        return memberDiagnose == null ? internalProperty : memberDiagnose.OutputValue.CurrentValue.Value;
+        return memberDiagnose == null ? getMemberValue() : memberDiagnose.OutputValue.Value;
     }
     
     public void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue, 
@@ -60,22 +61,18 @@ public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
             setMemberValue(value);
             return;
         }
-        (memberDiagnose.InputValue.OriginalValue as 
-            SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?>)!.Value = value;
+        memberDiagnose.InputValue.Value = value;
     }
 
-    public void AddMember<TMemberValueType>(
-        in string memberName,
-        Func<TMemberValueType?> getOriginalOutputValue,
-        Action<TMemberValueType?> setCurrentInputValue) =>
-        MemberDiagnoses.Add(
-            CreateMemberDiagnose(memberName, getOriginalOutputValue, setCurrentInputValue));
-
-    private MemberDiagnose<TOwnerType, TMemberValueType> CreateMemberDiagnose<TMemberValueType>(
-        in string memberName,
-        Func<TMemberValueType?> getOriginalOutputValue,
-        Action<TMemberValueType?> setCurrentInputValue) =>
-        new(this, memberName, InvokeOwnerPropertyChanged, getOriginalOutputValue, setCurrentInputValue);
+    public IMemberDiagnose CreateMemberDiagnosis<TMemberValueType>(
+        in string memberName, 
+        IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
+        IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
+        Func<TMemberValueType?> getMemberValue,
+        Action<TMemberValueType?> setMemberValue) =>
+        new MemberDiagnose<TOwnerType, TMemberValueType>(
+                this, memberName, inputCallerDefinitions, outputCallerDefinitions,
+                InvokeOwnerPropertyChanged, getMemberValue, setMemberValue);
 
     private void InvokeOwnerPropertyChanged(IMemberDiagnose memberDiagnose) =>
         _invokeOwnerPropertyChanged(memberDiagnose.MemberName);

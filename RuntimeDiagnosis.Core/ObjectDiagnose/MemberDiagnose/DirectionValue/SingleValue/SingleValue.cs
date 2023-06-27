@@ -1,17 +1,20 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
 
-[DebuggerDisplay($"{{ToString()}} ({nameof(Value)}: {{Value}})")]
+[DebuggerDisplay($"{{ToString()}} ({{ToShortCurrentValueString()}})")]
 public class SingleValue<TOwnerType, TMemberValueType, TValueType> : 
     ISingleValue<TOwnerType, TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
     private TValueType? _value;
-    
-    private ushort _setCount;
+    private ushort _getCalledCount;
+    private ushort _setCalledCount;
+    private ushort _changedCount;
+    private EventHandler<object?>? _valueChangedHandler;
     
     public string Name { get; }
 
@@ -23,21 +26,37 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
 
     object? ISingleValue.Value => Value;
 
+    TValueType? ISingleValue<TValueType?>.Value
+    {
+        get => Value;
+        set => Value = value;
+    }
+
     public TValueType? Value
     {
-        get => _value;
+        get => GetValue();
         internal set => SetValue(value);
     }
-    
-    public ushort SetCount
+
+    public ushort GetCalledCount
     {
-        get => _setCount;
-        private set => SetField(ref _setCount, value);
+        get => _getCalledCount;
+        private set => SetField(ref _getCalledCount, value);
+    }
+
+    public ushort SetCalledCount
+    {
+        get => _setCalledCount;
+        private set => SetField(ref _setCalledCount, value);
+    }
+
+    public ushort ChangedCount
+    {
+        get => _changedCount;
+        private set => SetField(ref _changedCount, value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    private EventHandler<object?>? _valueChangedHandler;
 
     event EventHandler<object?>? ISingleValue.ValueChanged
     {
@@ -48,8 +67,6 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     public event EventHandler<TValueType?>? ValueChanged;
     
     public event EventHandler? ValueChangedUnified;
-    
-    public event EventHandler<ushort>? SetCountChanged;
 
     public SingleValue(IDirectionValue<TOwnerType, TMemberValueType?> directionValue, string name)
     {
@@ -105,12 +122,23 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
         $"{DirectionValue.MemberDiagnose.ObjectDiagnose.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
-        $"{Name}: {Value}";
+        $"{Name}: {_value}";
+    
+    [UsedImplicitly]
+    public string ToShortCurrentValueString() =>
+        $"{nameof(Value)}: {_value}";
 
     internal void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)
     {
+        SetCalledCount++;
         if (SetField(ref _value, value, setAgainEvenIfNotChanged, nameof(Value)))
-            SetCount++;
+            ChangedCount++;
+    }
+
+    private TValueType? GetValue()
+    {
+        GetCalledCount++;
+        return _value;
     }
 
     protected bool SetField<T>(
@@ -131,8 +159,8 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
         PropertyChanged += OnPropertyChanged;
     }
 
-    private void OnValueChanged(object? sender, TValueType? e) => 
-        _valueChangedHandler?.Invoke(sender, e);
+    private void OnValueChanged(object? sender, TValueType? value) => 
+        _valueChangedHandler?.Invoke(sender, value);
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -140,9 +168,6 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
         {
             case nameof(Value):
                 InvokeValueChanged();
-                break;
-            case nameof(SetCount):
-                InvokeSetCountChanged();
                 break;
         }
     }
@@ -152,7 +177,4 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
         ValueChanged?.Invoke(this, Value);
         ValueChangedUnified?.Invoke(this, EventArgs.Empty);
     }
-
-    private void InvokeSetCountChanged() =>
-        SetCountChanged?.Invoke(this, SetCount);
 }
