@@ -1,11 +1,11 @@
 using System.ComponentModel;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
 
 public interface ISingleValue : IProvidesCurrentValueString, INotifyPropertyChanged, IEquatable<ISingleValue>
 {
     string Name { get; }
-    IDirectionValue DirectionValue { get; }
+    IDirectionValueDiagnosis DirectionValueDiagnosis { get; }
     object? Value { get; }
     ushort GetCalledCount { get; }
     ushort SetCalledCount { get; }
@@ -25,11 +25,11 @@ public interface ISingleValue<TValueType> : ISingleValue
 
 public interface ISingleValue<TMemberValueType, TValueType> : ISingleValue<TValueType?>
 {
-    new IDirectionValue<TMemberValueType?> DirectionValue { get; }
+    new IDirectionValueDiagnosis<TMemberValueType?> DirectionValueDiagnosis { get; }
 }
 
 public interface ISingleValue<TOwnerType, TMemberValueType, TValueType> : ISingleValue<TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    new IDirectionValue<TOwnerType, TMemberValueType?> DirectionValue { get; }
+    new IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; }
 }

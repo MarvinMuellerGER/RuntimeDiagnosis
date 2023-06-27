@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
 
 [DebuggerDisplay($"{{ToString()}} ({{ToShortCurrentValueString()}})")]
 public class SingleValue<TOwnerType, TMemberValueType, TValueType> : 
@@ -18,11 +18,11 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     
     public string Name { get; }
 
-    IDirectionValue ISingleValue.DirectionValue => DirectionValue;
+    IDirectionValueDiagnosis ISingleValue.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
-    IDirectionValue<TMemberValueType?> ISingleValue<TMemberValueType?, TValueType?>.DirectionValue => DirectionValue;
+    IDirectionValueDiagnosis<TMemberValueType?> ISingleValue<TMemberValueType?, TValueType?>.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
-    public IDirectionValue<TOwnerType, TMemberValueType?> DirectionValue { get; }
+    public IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; }
 
     object? ISingleValue.Value => Value;
 
@@ -68,9 +68,9 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     
     public event EventHandler? ValueChangedUnified;
 
-    public SingleValue(IDirectionValue<TOwnerType, TMemberValueType?> directionValue, string name)
+    public SingleValue(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name)
     {
-        DirectionValue = directionValue;
+        DirectionValueDiagnosis = directionValueDiagnosis;
         Name = name;
         AttachEventHandlers();
     }
@@ -114,12 +114,12 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
         };
 
     public override int GetHashCode() => 
-        HashCode.Combine(DirectionValue, Name);
+        HashCode.Combine(DirectionValueDiagnosis, Name);
 
     public override string ToString() =>
-        $"{Name} of {DirectionValue.GetNameWithoutGenericArity()} for " +
-        $"{DirectionValue.MemberDiagnosis.MemberName} of " +
-        $"{DirectionValue.MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
+        $"{Name} of {DirectionValueDiagnosis.GetNameWithoutGenericArity()} for " +
+        $"{DirectionValueDiagnosis.MemberDiagnosis.MemberName} of " +
+        $"{DirectionValueDiagnosis.MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
         $"{Name}: {_value}";

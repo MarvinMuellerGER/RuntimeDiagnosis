@@ -1,13 +1,13 @@
 ﻿using JetBrains.Annotations;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
-public static class DirectionValuesFinder
+public static class DirectionValueDiagnosesFinder
 {
-    public static IEnumerable<IDirectionValue> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
+    public static IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
         IEnumerable<DirectionValueDefinition> callerDefinitions)
     {
-        var output = new List<IDirectionValue>();
+        var output = new List<IDirectionValueDiagnosis>();
 
         foreach (var objectDiagnosis in ObjectDiagnosesManager.ObjectDiagnoses)
             output.AddRange(GetDirectionValuesFromObjectDiagnoseByDefinitions(
@@ -16,7 +16,7 @@ public static class DirectionValuesFinder
         return output;
     }
 
-    public static IEnumerable<IDirectionValue> GetDirectionValuesFromObjectDiagnoseByDefinitions(
+    public static IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromObjectDiagnoseByDefinitions(
         IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions) =>
         from callerDefinition in callerDefinitions
         where objectDiagnosis.OwnerBaseType == callerDefinition.OwnerType

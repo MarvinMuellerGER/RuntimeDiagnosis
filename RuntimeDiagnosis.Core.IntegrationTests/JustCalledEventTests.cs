@@ -1,6 +1,6 @@
 using RuntimeDiagnosis.Core.IntegrationTests.Testees;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
-using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.IDirectionValue.ValueDirectionType;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
+using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis.ValueDirectionType;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests;
 
@@ -23,8 +23,8 @@ public class JustCalledEventTests
             _testClassTestee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
         Assert.That(memberDiagnoseTestProperty, Is.Not.Null);
         
-        var tcs = new TaskCompletionSource<IDirectionValue?>();
-        memberDiagnoseTestProperty!.InputValue.JustCalled += (_, caller) => 
+        var tcs = new TaskCompletionSource<IDirectionValueDiagnosis?>();
+        memberDiagnoseTestProperty!.InputValueDiagnosis.JustCalled += (_, caller) => 
             tcs.TrySetResult(caller);
 
         _secondTestClassTestee.SecondTestProperty = true;
@@ -47,8 +47,8 @@ public class JustCalledEventTests
             _testClassTestee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
         Assert.That(memberDiagnoseTestProperty, Is.Not.Null);
         
-        var tcs = new TaskCompletionSource<IDirectionValue?>();
-        memberDiagnoseTestProperty!.OutputValue.JustCalled += (_, caller) => 
+        var tcs = new TaskCompletionSource<IDirectionValueDiagnosis?>();
+        memberDiagnoseTestProperty!.OutputValueDiagnosis.JustCalled += (_, caller) => 
             tcs.TrySetResult(caller);
 
         var secondTestProperty = _secondTestClassTestee.SecondTestProperty;

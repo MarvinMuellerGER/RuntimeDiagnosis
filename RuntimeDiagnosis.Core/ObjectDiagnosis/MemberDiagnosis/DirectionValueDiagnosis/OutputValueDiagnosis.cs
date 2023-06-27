@@ -1,16 +1,16 @@
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 using static RuntimeDiagnosis.Kit.EventAttacher;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
-public sealed class OutputValue<TOwnerType, TMemberValueType> : 
-    DirectionValue<TOwnerType, TMemberValueType?>, IOutputValue<TOwnerType, TMemberValueType?>
+public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> : 
+    DirectionValueDiagnosis<TOwnerType, TMemberValueType?>, IOutputValueDiagnosis<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
     private readonly Action _invokeOwnerPropertyChanged;
     private readonly Func<TMemberValueType?> _getOriginalValue;
 
-    TMemberValueType? IOutputValue<TMemberValueType?>.Value
+    TMemberValueType? IOutputValueDiagnosis<TMemberValueType?>.Value
     {
         get
         {
@@ -24,7 +24,7 @@ public sealed class OutputValue<TOwnerType, TMemberValueType> :
     
     public bool UpdateOriginalValueWhenDiagnosisActive { get; set; } = true;
 
-    public OutputValue(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
+    public OutputValueDiagnosis(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions,
         Action invokeOwnerPropertyChanged,
         Func<TMemberValueType?> getOriginalOutputValue,

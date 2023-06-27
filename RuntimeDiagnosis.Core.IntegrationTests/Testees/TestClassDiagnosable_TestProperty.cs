@@ -1,7 +1,7 @@
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
-using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.IDirectionValue.ValueDirectionType;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
+using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis.ValueDirectionType;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 

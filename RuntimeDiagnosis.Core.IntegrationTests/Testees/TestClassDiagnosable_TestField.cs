@@ -1,6 +1,6 @@
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 

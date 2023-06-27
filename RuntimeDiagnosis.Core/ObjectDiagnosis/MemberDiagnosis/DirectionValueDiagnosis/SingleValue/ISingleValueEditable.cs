@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
 
 public interface ISingleValueEditable : ISingleValueAlwaysEditable
 {

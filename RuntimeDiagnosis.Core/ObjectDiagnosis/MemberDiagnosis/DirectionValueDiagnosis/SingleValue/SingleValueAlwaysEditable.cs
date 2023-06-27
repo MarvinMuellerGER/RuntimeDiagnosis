@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
 
 public class SingleValueAlwaysEditable<TOwnerType, TMemberValueType, TValueType> : 
     SingleValue<TOwnerType, TMemberValueType?, TValueType?>, 
@@ -19,13 +19,13 @@ public class SingleValueAlwaysEditable<TOwnerType, TMemberValueType, TValueType>
         set => SetField(ref _editingCurrentlyAllowed, value);
     }
     
-    public SingleValueAlwaysEditable(IDirectionValue<TOwnerType, TMemberValueType?> directionValue, string name) : 
-        this(directionValue, name, true)
+    public SingleValueAlwaysEditable(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name) : 
+        this(directionValueDiagnosis, name, true)
     { }
 
     protected SingleValueAlwaysEditable(
-        IDirectionValue<TOwnerType, TMemberValueType?> directionValue, string name, bool editingCurrentlyAllowed) : 
-        base(directionValue, name) =>
+        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name, bool editingCurrentlyAllowed) : 
+        base(directionValueDiagnosis, name) =>
         _editingCurrentlyAllowed = editingCurrentlyAllowed;
 
     public new void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)

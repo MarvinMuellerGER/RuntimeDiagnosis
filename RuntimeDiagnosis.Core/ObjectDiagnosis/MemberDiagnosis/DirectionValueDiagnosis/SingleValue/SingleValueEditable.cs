@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
 
 public sealed class SingleValueEditable<TOwnerType, TMemberValueType, TValueType> : 
     SingleValueAlwaysEditable<TOwnerType, TMemberValueType?, TValueType?>, 
@@ -11,8 +11,8 @@ public sealed class SingleValueEditable<TOwnerType, TMemberValueType, TValueType
         internal set => base.EditingCurrentlyAllowed = value;
     }
 
-    public SingleValueEditable(IDirectionValue<TOwnerType, TMemberValueType?> directionValue, 
+    public SingleValueEditable(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, 
         string name, bool editingCurrentlyAllowed = false) :
-        base(directionValue, name, editingCurrentlyAllowed)
+        base(directionValueDiagnosis, name, editingCurrentlyAllowed)
     { }
 }

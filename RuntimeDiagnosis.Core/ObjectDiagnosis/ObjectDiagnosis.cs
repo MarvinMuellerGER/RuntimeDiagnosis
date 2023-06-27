@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
@@ -49,7 +49,7 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
         [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType>(memberName);
-        return memberDiagnose == null ? getMemberValue() : memberDiagnose.OutputValue.Value;
+        return memberDiagnose == null ? getMemberValue() : memberDiagnose.OutputValueDiagnosis.Value;
     }
     
     public void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue, 
@@ -61,7 +61,7 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
             setMemberValue(value);
             return;
         }
-        memberDiagnose.InputValue.Value = value;
+        memberDiagnose.InputValueDiagnosis.Value = value;
     }
 
     public IMemberDiagnosis CreateMemberDiagnosis<TMemberValueType>(

@@ -19,15 +19,15 @@ public class PropertyTests
         
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose!.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -35,31 +35,31 @@ public class PropertyTests
         _testee.TestProperty = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose!.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.True);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.True);
             
             Assert.That(_testee.TestProperty, Is.True);
         });
         
-        memberDiagnose!.InputValue.DiagnoseActive.Value = true;
+        memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
 
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -67,47 +67,47 @@ public class PropertyTests
         _testee.TestProperty = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
 
             Assert.That(_testee.TestProperty, Is.False);
         });
         
-        memberDiagnose.InputValue.DiagnoseValue.Value = true;
+        memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.True);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.True);
 
             Assert.That(_testee.TestProperty, Is.True);
         });
         
-        memberDiagnose.InputValue.DiagnoseActive.Value = false;
+        memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
 
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -122,15 +122,15 @@ public class PropertyTests
         
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose!.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -138,31 +138,31 @@ public class PropertyTests
         _testee.TestProperty = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose!.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.True);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.True);
             
             Assert.That(_testee.TestProperty, Is.True);
         });
         
-        memberDiagnose!.OutputValue.DiagnoseActive.Value = true;
+        memberDiagnose!.OutputValueDiagnosis.DiagnoseActive.Value = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.True);
 
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -170,47 +170,47 @@ public class PropertyTests
         _testee.TestProperty = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
         
-        memberDiagnose.OutputValue.DiagnoseValue.Value = true;
+        memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value = true;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
 
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.True);
             
             Assert.That(_testee.TestProperty, Is.True);
         });
         
-        memberDiagnose.OutputValue.DiagnoseActive.Value = false;
+        memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
 
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
@@ -225,53 +225,53 @@ public class PropertyTests
         
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose!.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
             
             Assert.That(_testee.TestProperty, Is.False);
         });
         
         _testee.TestProperty = true;
-        memberDiagnose!.InputValue.DiagnoseActive.Value = true;
+        memberDiagnose!.InputValueDiagnosis.DiagnoseActive.Value = true;
         _testee.TestProperty = false;
-        memberDiagnose.InputValue.DiagnoseValue.Value = true;
-        memberDiagnose.OutputValue.DiagnoseActive.Value = true;
-        memberDiagnose.OutputValue.DiagnoseValue.Value = false;
+        memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value = true;
+        memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value = true;
+        memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.True);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.False);
 
             Assert.That(_testee.TestProperty, Is.False);
         });
         
-        memberDiagnose.OutputValue.DiagnoseValue.Value = true;
-        memberDiagnose.InputValue.DiagnoseActive.Value = false;
+        memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value = true;
+        memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value = false;
         Assert.Multiple(() =>
         {
-            Assert.That(memberDiagnose.InputValue.DiagnoseActive.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.InputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.InputValue.CurrentValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseActive.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.InputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.InputValueDiagnosis.CurrentValue.Value, Is.False);
             
-            Assert.That(memberDiagnose.OutputValue.DiagnoseActive.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.OriginalValue.Value, Is.False);
-            Assert.That(memberDiagnose.OutputValue.DiagnoseValue.Value, Is.True);
-            Assert.That(memberDiagnose.OutputValue.CurrentValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseActive.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.OriginalValue.Value, Is.False);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.DiagnoseValue.Value, Is.True);
+            Assert.That(memberDiagnose.OutputValueDiagnosis.CurrentValue.Value, Is.True);
 
             Assert.That(_testee.TestProperty, Is.True);
         });

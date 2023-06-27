@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
@@ -16,24 +16,24 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
     
     public string MemberName { get; }
 
-    IInputValue IMemberDiagnosis.InputValue => InputValue;
+    IInputValueDiagnosis IMemberDiagnosis.InputValueDiagnosis => InputValueDiagnosis;
 
-    IInputValue<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.InputValue => InputValue;
+    IInputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.InputValueDiagnosis => InputValueDiagnosis;
 
-    public IInputValue<TOwnerType, TMemberValueType?> InputValue { get; }
+    public IInputValueDiagnosis<TOwnerType, TMemberValueType?> InputValueDiagnosis { get; }
 
-    IOutputValue IMemberDiagnosis.OutputValue => OutputValue;
+    IOutputValueDiagnosis IMemberDiagnosis.OutputValueDiagnosis => OutputValueDiagnosis;
 
-    IOutputValue<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.OutputValue => OutputValue;
+    IOutputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.OutputValueDiagnosis => OutputValueDiagnosis;
 
-    public IOutputValue<TOwnerType, TMemberValueType?> OutputValue { get; }
+    public IOutputValueDiagnosis<TOwnerType, TMemberValueType?> OutputValueDiagnosis { get; }
 
-    IEnumerable<IDirectionValue> IMemberDiagnosis.DirectionValues => DirectionValues;
+    IEnumerable<IDirectionValueDiagnosis> IMemberDiagnosis.DirectionValues => DirectionValues;
     
-    IEnumerable<IDirectionValue<TMemberValueType?>> IMemberDiagnosis<TMemberValueType?>.DirectionValues => 
+    IEnumerable<IDirectionValueDiagnosis<TMemberValueType?>> IMemberDiagnosis<TMemberValueType?>.DirectionValues => 
         DirectionValues;
 
-    public IEnumerable<IDirectionValue<TOwnerType, TMemberValueType?>> DirectionValues { get; }
+    public IEnumerable<IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>> DirectionValues { get; }
 
     public MemberDiagnosis(in IObjectDiagnosis<TOwnerType> objectDiagnosis,
         in string memberName,
@@ -46,14 +46,14 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
         ObjectDiagnosis = objectDiagnosis;
         MemberName = memberName;
-        InputValue = new InputValue<TOwnerType, TMemberValueType?>(
+        InputValueDiagnosis = new InputValueDiagnosis<TOwnerType, TMemberValueType?>(
             this, inputCallerDefinitions, setCurrentInputValue);
-        OutputValue = new OutputValue<TOwnerType, TMemberValueType?>(
+        OutputValueDiagnosis = new OutputValueDiagnosis<TOwnerType, TMemberValueType?>(
             this, outputCallerDefinitions, InvokeOwnerPropertyChanged,
             getOriginalOutputValue,
             inputValueChanged => 
-                InputValue.CurrentValue.ValueChangedUnified += inputValueChanged);
-        DirectionValues = new IDirectionValue<TOwnerType, TMemberValueType?>[] { InputValue, OutputValue };
+                InputValueDiagnosis.CurrentValue.ValueChangedUnified += inputValueChanged);
+        DirectionValues = new IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>[] { InputValueDiagnosis, OutputValueDiagnosis };
     }
     
     public override string ToString() =>
@@ -61,7 +61,7 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
         $"{ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
-        $"{InputValue.ToCurrentValueString()}, {OutputValue.ToCurrentValueString()}";
+        $"{InputValueDiagnosis.ToCurrentValueString()}, {OutputValueDiagnosis.ToCurrentValueString()}";
     
     private void InvokeOwnerPropertyChanged() =>
         _invokeOwnerPropertyChanged(this);
