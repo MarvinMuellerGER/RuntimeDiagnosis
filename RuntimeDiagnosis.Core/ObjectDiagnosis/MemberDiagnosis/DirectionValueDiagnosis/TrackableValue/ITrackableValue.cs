@@ -1,8 +1,8 @@
 using System.ComponentModel;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
-public interface ISingleValue : IProvidesCurrentValueString, INotifyPropertyChanged, IEquatable<ISingleValue>
+public interface ITrackableValue : IProvidesCurrentValueString, INotifyPropertyChanged, IEquatable<ITrackableValue>
 {
     string Name { get; }
     IDirectionValueDiagnosis DirectionValueDiagnosis { get; }
@@ -15,20 +15,20 @@ public interface ISingleValue : IProvidesCurrentValueString, INotifyPropertyChan
     string ToString();
 }
 
-public interface ISingleValue<TValueType> : ISingleValue
+public interface ITrackableValue<TValueType> : ITrackableValue
 {
     new TValueType? Value { get; internal set; }
     new event EventHandler<TValueType?>? ValueChanged;
-    bool Equals(ISingleValue<TValueType?>? other);
+    bool Equals(ITrackableValue<TValueType?>? other);
     bool Equals(TValueType? value);
 }
 
-public interface ISingleValue<TMemberValueType, TValueType> : ISingleValue<TValueType?>
+public interface ITrackableValue<TMemberValueType, TValueType> : ITrackableValue<TValueType?>
 {
     new IDirectionValueDiagnosis<TMemberValueType?> DirectionValueDiagnosis { get; }
 }
 
-public interface ISingleValue<TOwnerType, TMemberValueType, TValueType> : ISingleValue<TMemberValueType?, TValueType?>
+public interface ITrackableValue<TOwnerType, TMemberValueType, TValueType> : ITrackableValue<TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
     new IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; }

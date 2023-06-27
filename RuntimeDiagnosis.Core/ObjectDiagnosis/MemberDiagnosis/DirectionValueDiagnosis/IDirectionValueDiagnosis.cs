@@ -1,4 +1,4 @@
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
@@ -15,10 +15,10 @@ public interface IDirectionValueDiagnosis :
     IMemberDiagnosis MemberDiagnosis { get; }
     IEnumerable<IDirectionValueDiagnosis> Callers { get; }
     IDirectionValueDiagnosis? LastCaller { get; }
-    ISingleValueAlwaysEditable<bool> DiagnoseActive { get; }
-    ISingleValue OriginalValue { get; }
-    ISingleValueEditable DiagnoseValue { get; }
-    ISingleValue CurrentValue { get; }
+    ITrackableValueAlwaysEditable<bool> DiagnoseActive { get; }
+    ITrackableValue OriginalValue { get; }
+    ITrackableValueEditable DiagnoseValue { get; }
+    ITrackableValue CurrentValue { get; }
     delegate void JustCalledEventHandler(IDirectionValueDiagnosis sender, IDirectionValueDiagnosis? caller);
     event JustCalledEventHandler? JustCalled;
     bool SetDiagnoseValueAgain();
@@ -28,10 +28,10 @@ public interface IDirectionValueDiagnosis<TMemberValueType> :
     IDirectionValueDiagnosis
 {
     new IMemberDiagnosis<TMemberValueType?> MemberDiagnosis { get; }
-    new ISingleValueAlwaysEditable<TMemberValueType?, bool> DiagnoseActive { get; }
-    new ISingleValueEditable<TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
-    new ISingleValue<TMemberValueType?, TMemberValueType?> OriginalValue { get; }
-    new ISingleValue<TMemberValueType?, TMemberValueType?> CurrentValue { get; }
+    new ITrackableValueAlwaysEditable<TMemberValueType?, bool> DiagnoseActive { get; }
+    new ITrackableValueEditable<TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
+    new ITrackableValue<TMemberValueType?, TMemberValueType?> OriginalValue { get; }
+    new ITrackableValue<TMemberValueType?, TMemberValueType?> CurrentValue { get; }
     bool Equals(IDirectionValueDiagnosis<TMemberValueType?>? other); 
     bool Equals(TMemberValueType? value);
 }
@@ -40,8 +40,8 @@ public interface IDirectionValueDiagnosis<TOwnerType, TMemberValueType> : IDirec
     where TOwnerType : IDiagnosableObject
 {
     new IMemberDiagnosis<TOwnerType, TMemberValueType?> MemberDiagnosis { get; }
-    new ISingleValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
-    new ISingleValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
-    new ISingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValue { get; }
-    new ISingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> CurrentValue { get; }
+    new ITrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
+    new ITrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
+    new ITrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValue { get; }
+    new ITrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> CurrentValue { get; }
 }

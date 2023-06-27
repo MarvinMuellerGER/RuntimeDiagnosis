@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
-using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 using RuntimeDiagnosis.Kit;
 using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis;
 using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis.ValueDirectionType;
@@ -13,10 +13,10 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
 {
     private readonly List<DirectionValueDefinition> _callerDefinitions;
     private readonly List<IDirectionValueDiagnosis> _callers = new();
-    private readonly SingleValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> _diagnoseValue;
-    private readonly SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> _currentValueInternal;
+    private readonly TrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> _diagnoseValue;
+    private readonly TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> _currentValueInternal;
     
-    private protected readonly SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValueInternal;
+    private protected readonly TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValueInternal;
     
     private IDirectionValueDiagnosis? _currentCaller;
 
@@ -35,34 +35,34 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
 
     public IDirectionValueDiagnosis? LastCaller { get; private set; }
 
-    ISingleValueAlwaysEditable<bool> IDirectionValueDiagnosis.DiagnoseActive => 
+    ITrackableValueAlwaysEditable<bool> IDirectionValueDiagnosis.DiagnoseActive => 
         DiagnoseActive;
 
-    ISingleValueAlwaysEditable<TMemberValueType?, bool> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseActive => 
+    ITrackableValueAlwaysEditable<TMemberValueType?, bool> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseActive => 
         DiagnoseActive;
     
-    public ISingleValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
+    public ITrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
 
-    ISingleValueEditable IDirectionValueDiagnosis.DiagnoseValue => DiagnoseValue;
+    ITrackableValueEditable IDirectionValueDiagnosis.DiagnoseValue => DiagnoseValue;
 
-    ISingleValueEditable<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseValue => 
+    ITrackableValueEditable<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseValue => 
         DiagnoseValue;
 
-    public ISingleValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue => _diagnoseValue;
+    public ITrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue => _diagnoseValue;
     
-    ISingleValue IDirectionValueDiagnosis.OriginalValue => OriginalValue;
+    ITrackableValue IDirectionValueDiagnosis.OriginalValue => OriginalValue;
 
-    ISingleValue<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.OriginalValue => 
+    ITrackableValue<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.OriginalValue => 
         OriginalValue;
 
-    public ISingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValue => OriginalValueInternal;
+    public ITrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValue => OriginalValueInternal;
 
-    ISingleValue IDirectionValueDiagnosis.CurrentValue => CurrentValue;
+    ITrackableValue IDirectionValueDiagnosis.CurrentValue => CurrentValue;
 
-    ISingleValue<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.CurrentValue => 
+    ITrackableValue<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.CurrentValue => 
         CurrentValue;
     
-    public ISingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> CurrentValue => _currentValueInternal;
+    public ITrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> CurrentValue => _currentValueInternal;
     
     private IDirectionValueDiagnosis? CurrentCaller
     {
@@ -78,13 +78,13 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
         ValueDirection = this is IInputValueDiagnosis ? Input : Output;
         
         DiagnoseActive = 
-            new SingleValueAlwaysEditable<TOwnerType, TMemberValueType?, bool>(this, nameof(DiagnoseActive));
+            new TrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool>(this, nameof(DiagnoseActive));
         _diagnoseValue = 
-            new SingleValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(DiagnoseValue));
+            new TrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(DiagnoseValue));
         OriginalValueInternal = 
-            new SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(OriginalValue));
+            new TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(OriginalValue));
         _currentValueInternal = 
-            new SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(CurrentValue));
+            new TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(CurrentValue));
         
         MemberDiagnosis = memberDiagnosis;
         _callerDefinitions = callerDefinitions.ToList();

@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
 [DebuggerDisplay($"{{ToString()}} ({{ToShortCurrentValueString()}})")]
-public class SingleValue<TOwnerType, TMemberValueType, TValueType> : 
-    ISingleValue<TOwnerType, TMemberValueType?, TValueType?>
+public class TrackableValue<TOwnerType, TMemberValueType, TValueType> : 
+    ITrackableValue<TOwnerType, TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
     private TValueType? _value;
@@ -18,15 +18,15 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     
     public string Name { get; }
 
-    IDirectionValueDiagnosis ISingleValue.DirectionValueDiagnosis => DirectionValueDiagnosis;
+    IDirectionValueDiagnosis ITrackableValue.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
-    IDirectionValueDiagnosis<TMemberValueType?> ISingleValue<TMemberValueType?, TValueType?>.DirectionValueDiagnosis => DirectionValueDiagnosis;
+    IDirectionValueDiagnosis<TMemberValueType?> ITrackableValue<TMemberValueType?, TValueType?>.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
     public IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; }
 
-    object? ISingleValue.Value => Value;
+    object? ITrackableValue.Value => Value;
 
-    TValueType? ISingleValue<TValueType?>.Value
+    TValueType? ITrackableValue<TValueType?>.Value
     {
         get => Value;
         set => Value = value;
@@ -58,7 +58,7 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    event EventHandler<object?>? ISingleValue.ValueChanged
+    event EventHandler<object?>? ITrackableValue.ValueChanged
     {
         add => _valueChangedHandler += value;
         remove => _valueChangedHandler -= value;
@@ -68,37 +68,37 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     
     public event EventHandler? ValueChangedUnified;
 
-    public SingleValue(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name)
+    public TrackableValue(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name)
     {
         DirectionValueDiagnosis = directionValueDiagnosis;
         Name = name;
         AttachEventHandlers();
     }
     
-    public static bool operator ==(SingleValue<TOwnerType, TMemberValueType, TValueType> obj1, ISingleValue? obj2) =>
+    public static bool operator ==(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) =>
         obj1.Equals(obj2);
 
-    public static bool operator !=(SingleValue<TOwnerType, TMemberValueType, TValueType> obj1, ISingleValue? obj2) => 
+    public static bool operator !=(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) => 
         !(obj1 == obj2);
     
     public static bool operator ==(
-        SingleValue<TOwnerType, TMemberValueType, TValueType> obj1, ISingleValue<TValueType?>? obj2) =>
+        TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue<TValueType?>? obj2) =>
         obj1.Equals(obj2);
 
     public static bool operator !=(
-        SingleValue<TOwnerType, TMemberValueType, TValueType> obj1, ISingleValue<TValueType?>? obj2) => 
+        TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue<TValueType?>? obj2) => 
         !(obj1 == obj2);
     
-    public static bool operator ==(SingleValue<TOwnerType, TMemberValueType, TValueType> obj, TValueType? value) =>
+    public static bool operator ==(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj, TValueType? value) =>
         obj.Equals(value);
 
-    public static bool operator !=(SingleValue<TOwnerType, TMemberValueType, TValueType> obj, TValueType? value) => 
+    public static bool operator !=(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj, TValueType? value) => 
         !(obj == value);
 
-    public bool Equals(ISingleValue? other) =>
+    public bool Equals(ITrackableValue? other) =>
         other != null && Equals(Value, other.Value);
 
-    public bool Equals(ISingleValue<TValueType?>? other) =>
+    public bool Equals(ITrackableValue<TValueType?>? other) =>
         other != null && EqualityComparer<TValueType?>.Default.Equals(Value, other.Value);
 
     public bool Equals(TValueType? value) =>
@@ -107,8 +107,8 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
     public override bool Equals(object? obj) =>
         obj switch
         {
-            ISingleValue<TValueType?> other2 => Equals(other2),
-            ISingleValue other1 => Equals(other1),
+            ITrackableValue<TValueType?> other2 => Equals(other2),
+            ITrackableValue other1 => Equals(other1),
             TValueType value => Equals(value),
             _ => false
         };
