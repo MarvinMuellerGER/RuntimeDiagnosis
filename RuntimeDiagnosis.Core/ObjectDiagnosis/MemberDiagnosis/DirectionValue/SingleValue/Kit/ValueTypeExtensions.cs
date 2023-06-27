@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue.Kit;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue.Kit;
 
 public static class ValueTypeExtensions
 {

@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
 
 public class SingleValueAlwaysEditable<TOwnerType, TMemberValueType, TValueType> : 
     SingleValue<TOwnerType, TMemberValueType?, TValueType?>, 

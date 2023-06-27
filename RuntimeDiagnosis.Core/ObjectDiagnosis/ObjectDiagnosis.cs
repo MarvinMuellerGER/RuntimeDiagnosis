@@ -1,48 +1,48 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 using RuntimeDiagnosis.Kit;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
  
 [DebuggerDisplay("{ToString()}")]
-public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
+public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
     where TOwnerType : IDiagnosableObject
 {
     private readonly Action<string> _invokeOwnerPropertyChanged;
 
-    IDiagnosableObject IObjectDiagnose.Owner => Owner;
+    IDiagnosableObject IObjectDiagnosis.Owner => Owner;
     
     public TOwnerType Owner { get; }
 
     public Type OwnerBaseType => Owner.GetType().BaseType ?? Owner.GetType();
 
     [DebuggerDisplay($"{nameof(MemberDiagnoses)} for {{GetOwnerTypeString()}}")]
-    public IEnumerable<IMemberDiagnose> MemberDiagnoses { get; internal set; } = null!;
+    public IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; internal set; } = null!;
 
-    internal ObjectDiagnose(TOwnerType owner, Action<string> invokePropertyChanged)
+    internal ObjectDiagnosis(TOwnerType owner, Action<string> invokePropertyChanged)
     {
         _invokeOwnerPropertyChanged = invokePropertyChanged;
         Owner = owner;
     }
 
     public override string ToString() =>
-        $"{typeof(ObjectDiagnose<TOwnerType>).GetNameWithoutGenericArity()} for {GetOwnerTypeString()}";
+        $"{typeof(ObjectDiagnosis<TOwnerType>).GetNameWithoutGenericArity()} for {GetOwnerTypeString()}";
 
     public string GetOwnerTypeString() =>
         $"{OwnerBaseType.Name} object";
 
-    public IMemberDiagnose? GetMemberDiagnose([CallerMemberName] string memberName = "") =>
+    public IMemberDiagnosis? GetMemberDiagnose([CallerMemberName] string memberName = "") =>
         MemberDiagnoses.FirstOrDefault(md => md.MemberName == memberName);
 
-    IMemberDiagnose<TMemberValueType?>? IObjectDiagnose.GetMemberDiagnose<TMemberValueType>(
+    IMemberDiagnosis<TMemberValueType?>? IObjectDiagnosis.GetMemberDiagnose<TMemberValueType>(
         string memberName) where TMemberValueType : default =>
-        GetMemberDiagnose(memberName) as IMemberDiagnose<TMemberValueType?>;
+        GetMemberDiagnose(memberName) as IMemberDiagnosis<TMemberValueType?>;
 
-    public IMemberDiagnose<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
+    public IMemberDiagnosis<TOwnerType, TMemberValueType?>? GetMemberDiagnose<TMemberValueType>(
         [CallerMemberName] string memberName = "") =>
-        GetMemberDiagnose(memberName) as MemberDiagnose<TOwnerType, TMemberValueType?>;
+        GetMemberDiagnose(memberName) as MemberDiagnosis<TOwnerType, TMemberValueType?>;
     
     public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(
         in Func<TMemberValueType?> getMemberValue,
@@ -64,16 +64,16 @@ public class ObjectDiagnose<TOwnerType> : IObjectDiagnose<TOwnerType>
         memberDiagnose.InputValue.Value = value;
     }
 
-    public IMemberDiagnose CreateMemberDiagnosis<TMemberValueType>(
+    public IMemberDiagnosis CreateMemberDiagnosis<TMemberValueType>(
         in string memberName, 
         IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
         IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
         Func<TMemberValueType?> getMemberValue,
         Action<TMemberValueType?> setMemberValue) =>
-        new MemberDiagnose<TOwnerType, TMemberValueType>(
+        new MemberDiagnosis<TOwnerType, TMemberValueType>(
                 this, memberName, inputCallerDefinitions, outputCallerDefinitions,
                 InvokeOwnerPropertyChanged, getMemberValue, setMemberValue);
 
-    private void InvokeOwnerPropertyChanged(IMemberDiagnose memberDiagnose) =>
-        _invokeOwnerPropertyChanged(memberDiagnose.MemberName);
+    private void InvokeOwnerPropertyChanged(IMemberDiagnosis memberDiagnosis) =>
+        _invokeOwnerPropertyChanged(memberDiagnosis.MemberName);
 }

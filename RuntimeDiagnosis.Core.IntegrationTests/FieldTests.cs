@@ -14,7 +14,7 @@ public class FieldTests
     public void Test_InputDiagnose()
     {
         var memberDiagnose = 
-            _testee.ObjectDiagnose.GetMemberDiagnose<bool>(nameof(_testee.TestField));
+            _testee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testee.TestField));
         Assert.That(memberDiagnose, Is.Not.Null);
         
         Assert.Multiple(() =>
@@ -117,7 +117,7 @@ public class FieldTests
     public void Test_OutputDiagnose()
     {
         var memberDiagnose = 
-            _testee.ObjectDiagnose.GetMemberDiagnose<bool>(nameof(_testee.TestField));
+            _testee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testee.TestField));
         Assert.That(memberDiagnose, Is.Not.Null);
         
         Assert.Multiple(() =>
@@ -220,7 +220,7 @@ public class FieldTests
     public void Test_InputAndOutputDiagnoseAtTheSameTime()
     {
         var memberDiagnose = 
-            _testee.ObjectDiagnose.GetMemberDiagnose<bool>(nameof(_testee.TestField));
+            _testee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testee.TestField));
         Assert.That(memberDiagnose, Is.Not.Null);
         
         Assert.Multiple(() =>

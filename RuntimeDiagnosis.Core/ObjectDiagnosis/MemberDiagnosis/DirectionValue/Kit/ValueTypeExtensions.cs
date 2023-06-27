@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 
 public static class MemberValueTypeExtensions
 {

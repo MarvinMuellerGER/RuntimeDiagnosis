@@ -1,4 +1,4 @@
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 public interface IProvidesCurrentValueString
 {

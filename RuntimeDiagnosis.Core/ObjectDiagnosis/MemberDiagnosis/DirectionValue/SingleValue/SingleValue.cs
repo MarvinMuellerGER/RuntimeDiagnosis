@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
 
 [DebuggerDisplay($"{{ToString()}} ({{ToShortCurrentValueString()}})")]
 public class SingleValue<TOwnerType, TMemberValueType, TValueType> : 
@@ -118,8 +118,8 @@ public class SingleValue<TOwnerType, TMemberValueType, TValueType> :
 
     public override string ToString() =>
         $"{Name} of {DirectionValue.GetNameWithoutGenericArity()} for " +
-        $"{DirectionValue.MemberDiagnose.MemberName} of " +
-        $"{DirectionValue.MemberDiagnose.ObjectDiagnose.GetOwnerTypeString()}";
+        $"{DirectionValue.MemberDiagnosis.MemberName} of " +
+        $"{DirectionValue.MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
         $"{Name}: {_value}";

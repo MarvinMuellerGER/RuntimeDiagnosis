@@ -1,7 +1,7 @@
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
 using RuntimeDiagnosis.Kit;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
 
 public interface IDirectionValue : 
     IProvidesNameWithoutGenericArity, IProvidesCurrentValueString, IEquatable<IDirectionValue?>
@@ -12,7 +12,7 @@ public interface IDirectionValue :
         Output
     }
     ValueDirectionType ValueDirection { get; }
-    IMemberDiagnose MemberDiagnose { get; }
+    IMemberDiagnosis MemberDiagnosis { get; }
     IEnumerable<IDirectionValue> Callers { get; }
     IDirectionValue? LastCaller { get; }
     ISingleValueAlwaysEditable<bool> DiagnoseActive { get; }
@@ -27,7 +27,7 @@ public interface IDirectionValue :
 public interface IDirectionValue<TMemberValueType> : 
     IDirectionValue
 {
-    new IMemberDiagnose<TMemberValueType?> MemberDiagnose { get; }
+    new IMemberDiagnosis<TMemberValueType?> MemberDiagnosis { get; }
     new ISingleValueAlwaysEditable<TMemberValueType?, bool> DiagnoseActive { get; }
     new ISingleValueEditable<TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
     new ISingleValue<TMemberValueType?, TMemberValueType?> OriginalValue { get; }
@@ -39,7 +39,7 @@ public interface IDirectionValue<TMemberValueType> :
 public interface IDirectionValue<TOwnerType, TMemberValueType> : IDirectionValue<TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    new IMemberDiagnose<TOwnerType, TMemberValueType?> MemberDiagnose { get; }
+    new IMemberDiagnosis<TOwnerType, TMemberValueType?> MemberDiagnosis { get; }
     new ISingleValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
     new ISingleValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue { get; }
     new ISingleValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValue { get; }

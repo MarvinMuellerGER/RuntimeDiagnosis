@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 
 public static class DirectionValuesFinder
 {
@@ -17,10 +17,10 @@ public static class DirectionValuesFinder
     }
 
     public static IEnumerable<IDirectionValue> GetDirectionValuesFromObjectDiagnoseByDefinitions(
-        IObjectDiagnose objectDiagnose, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions) =>
+        IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions) =>
         from callerDefinition in callerDefinitions
-        where objectDiagnose.OwnerBaseType == callerDefinition.OwnerType
-        from memberDiagnosis in objectDiagnose.MemberDiagnoses
+        where objectDiagnosis.OwnerBaseType == callerDefinition.OwnerType
+        from memberDiagnosis in objectDiagnosis.MemberDiagnoses
         where memberDiagnosis.MemberName == callerDefinition.MemberName
         from directionValue in memberDiagnosis.DirectionValues
         where directionValue.ValueDirection == callerDefinition.ValueDirection

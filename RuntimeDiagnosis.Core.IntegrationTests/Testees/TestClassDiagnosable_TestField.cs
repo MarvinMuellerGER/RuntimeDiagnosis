@@ -1,6 +1,6 @@
-using RuntimeDiagnosis.Core.ObjectDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
@@ -8,8 +8,8 @@ public partial class TestClassDiagnosable
 {
     public new bool TestField
     {
-        get => _objectDiagnose.GetCurrentOutputMemberValue(GetOriginalOutputValueOfTestField);
-        set => _objectDiagnose.SetOriginalInputMemberValue(SetCurrentInputValueOfTestField, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(GetOriginalOutputValueOfTestField);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(SetCurrentInputValueOfTestField, value);
     }
 
     private bool GetOriginalOutputValueOfTestField() => 
@@ -24,8 +24,8 @@ public partial class TestClassDiagnosable
     private static IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestField => 
         Array.Empty<DirectionValueDefinition>();
     
-    private IMemberDiagnose CreateMemberDiagnosisForTestField(ObjectDiagnose<TestClassDiagnosable> objectDiagnose) =>
-        objectDiagnose.CreateMemberDiagnosis(nameof(TestField),
+    private IMemberDiagnosis CreateMemberDiagnosisForTestField(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
+        objectDiagnosis.CreateMemberDiagnosis(nameof(TestField),
             InputCallerDefinitionsForTestField, 
             OutputCallerDefinitionsForTestField,
             GetOriginalOutputValueOfTestField, SetCurrentInputValueOfTestField);

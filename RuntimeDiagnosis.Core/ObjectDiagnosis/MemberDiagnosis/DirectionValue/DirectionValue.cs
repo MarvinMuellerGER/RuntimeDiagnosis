@@ -1,12 +1,11 @@
 using System.Diagnostics;
-using JetBrains.Annotations;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
 using RuntimeDiagnosis.Kit;
-using static RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.IDirectionValue;
-using static RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.IDirectionValue.ValueDirectionType;
+using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.IDirectionValue;
+using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.IDirectionValue.ValueDirectionType;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
 
 [DebuggerDisplay("{ToString()} ({ToShortCurrentValueString()})")]
 public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionValue<TOwnerType, TMemberValueType?>
@@ -23,14 +22,14 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
 
     public ValueDirectionType ValueDirection { get; }
 
-    IMemberDiagnose IDirectionValue.MemberDiagnose => MemberDiagnose;
+    IMemberDiagnosis IDirectionValue.MemberDiagnosis => MemberDiagnosis;
 
-    IMemberDiagnose<TMemberValueType?> IDirectionValue<TMemberValueType?>.MemberDiagnose => MemberDiagnose;
+    IMemberDiagnosis<TMemberValueType?> IDirectionValue<TMemberValueType?>.MemberDiagnosis => MemberDiagnosis;
 
-    IMemberDiagnose<TOwnerType, TMemberValueType?> IDirectionValue<TOwnerType, TMemberValueType?>.MemberDiagnose => 
-        MemberDiagnose;
+    IMemberDiagnosis<TOwnerType, TMemberValueType?> IDirectionValue<TOwnerType, TMemberValueType?>.MemberDiagnosis => 
+        MemberDiagnosis;
 
-    public IMemberDiagnose<TOwnerType, TMemberValueType?> MemberDiagnose { get; }
+    public IMemberDiagnosis<TOwnerType, TMemberValueType?> MemberDiagnosis { get; }
 
     public IEnumerable<IDirectionValue> Callers => _callers;
 
@@ -73,7 +72,7 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
 
     public event JustCalledEventHandler? JustCalled;
     
-    protected DirectionValue(IMemberDiagnose<TOwnerType, TMemberValueType?> memberDiagnose, 
+    protected DirectionValue(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions)
     {
         ValueDirection = this is IInputValue ? Input : Output;
@@ -87,7 +86,7 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
         _currentValueInternal = 
             new SingleValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(CurrentValue));
         
-        MemberDiagnose = memberDiagnose;
+        MemberDiagnosis = memberDiagnosis;
         _callerDefinitions = callerDefinitions.ToList();
 
         AttachEventHandlers();
@@ -133,11 +132,11 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
         };
 
     public override int GetHashCode() => 
-        HashCode.Combine(MemberDiagnose, GetType());
+        HashCode.Combine(MemberDiagnosis, GetType());
     
     public override string ToString() =>
-        $"{GetNameWithoutGenericArity()} for {MemberDiagnose.MemberName} of " +
-        $"{MemberDiagnose.ObjectDiagnose.GetOwnerTypeString()}";
+        $"{GetNameWithoutGenericArity()} for {MemberDiagnosis.MemberName} of " +
+        $"{MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
         $"{GetNameWithoutGenericArity()}: {{{ToShortCurrentValueString()}}}";
@@ -170,12 +169,12 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
         DiagnoseActive.ValueChanged += DiagnoseActiveOnValueChanged;
     }
 
-    private void OnNewObjectDiagnoseCreated(object? sender, IObjectDiagnose objectDiagnose)
+    private void OnNewObjectDiagnoseCreated(object? sender, IObjectDiagnosis objectDiagnosis)
     {
-        if (objectDiagnose == MemberDiagnose.ObjectDiagnose) 
+        if (objectDiagnosis == MemberDiagnosis.ObjectDiagnosis) 
             return;
         
-        GetCallersFromObjectDiagnoseByCallerDefinitions(objectDiagnose);
+        GetCallersFromObjectDiagnoseByCallerDefinitions(objectDiagnosis);
     }
 
     private void GetCallersFromKnownObjectDiagnosesByCallerDefinitions() => 
@@ -183,9 +182,9 @@ public abstract class DirectionValue<TOwnerType, TMemberValueType> : IDirectionV
             DirectionValuesFinder.GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
                 _callerDefinitions));
     
-    private void GetCallersFromObjectDiagnoseByCallerDefinitions(IObjectDiagnose objectDiagnose) => 
+    private void GetCallersFromObjectDiagnoseByCallerDefinitions(IObjectDiagnosis objectDiagnosis) => 
         AddNewCallers(
-            DirectionValuesFinder.GetDirectionValuesFromObjectDiagnoseByDefinitions(objectDiagnose,
+            DirectionValuesFinder.GetDirectionValuesFromObjectDiagnoseByDefinitions(objectDiagnosis,
                 _callerDefinitions));
 
     private void AddNewCallers(IEnumerable<IDirectionValue> newCallers)

@@ -1,6 +1,6 @@
 using RuntimeDiagnosis.Core.IntegrationTests.Testees;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
-using static RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.IDirectionValue.ValueDirectionType;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
+using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.IDirectionValue.ValueDirectionType;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests;
 
@@ -20,7 +20,7 @@ public class JustCalledEventTests
     public void Test_InputJustCalledEvent()
     {
         var memberDiagnoseTestProperty = 
-            _testClassTestee.ObjectDiagnose.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
+            _testClassTestee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
         Assert.That(memberDiagnoseTestProperty, Is.Not.Null);
         
         var tcs = new TaskCompletionSource<IDirectionValue?>();
@@ -34,8 +34,8 @@ public class JustCalledEventTests
         Assert.That(caller, Is.Not.Null);
         Assert.Multiple(() =>
         {
-            Assert.That(caller!.MemberDiagnose.ObjectDiagnose.Owner, Is.EqualTo(_secondTestClassTestee));
-            Assert.That(caller.MemberDiagnose.MemberName, Is.EqualTo(nameof(_secondTestClassTestee.SecondTestProperty)));
+            Assert.That(caller!.MemberDiagnosis.ObjectDiagnosis.Owner, Is.EqualTo(_secondTestClassTestee));
+            Assert.That(caller.MemberDiagnosis.MemberName, Is.EqualTo(nameof(_secondTestClassTestee.SecondTestProperty)));
             Assert.That(caller.ValueDirection, Is.EqualTo(Input));
         });
     }
@@ -44,7 +44,7 @@ public class JustCalledEventTests
     public void Test_OutputJustCalledEvent()
     {
         var memberDiagnoseTestProperty = 
-            _testClassTestee.ObjectDiagnose.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
+            _testClassTestee.ObjectDiagnosis.GetMemberDiagnose<bool>(nameof(_testClassTestee.TestProperty));
         Assert.That(memberDiagnoseTestProperty, Is.Not.Null);
         
         var tcs = new TaskCompletionSource<IDirectionValue?>();
@@ -58,8 +58,8 @@ public class JustCalledEventTests
         Assert.That(caller, Is.Not.Null);
         Assert.Multiple(() =>
         {
-            Assert.That(caller!.MemberDiagnose.ObjectDiagnose.Owner, Is.EqualTo(_secondTestClassTestee));
-            Assert.That(caller.MemberDiagnose.MemberName, Is.EqualTo(nameof(_secondTestClassTestee.SecondTestProperty)));
+            Assert.That(caller!.MemberDiagnosis.ObjectDiagnosis.Owner, Is.EqualTo(_secondTestClassTestee));
+            Assert.That(caller.MemberDiagnosis.MemberName, Is.EqualTo(nameof(_secondTestClassTestee.SecondTestProperty)));
             Assert.That(caller.ValueDirection, Is.EqualTo(Output));
         });
     }

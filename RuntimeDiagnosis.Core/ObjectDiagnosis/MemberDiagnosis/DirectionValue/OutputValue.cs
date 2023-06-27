@@ -1,7 +1,7 @@
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 using static RuntimeDiagnosis.Kit.EventAttacher;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
 
 public sealed class OutputValue<TOwnerType, TMemberValueType> : 
     DirectionValue<TOwnerType, TMemberValueType?>, IOutputValue<TOwnerType, TMemberValueType?>
@@ -24,12 +24,12 @@ public sealed class OutputValue<TOwnerType, TMemberValueType> :
     
     public bool UpdateOriginalValueWhenDiagnosisActive { get; set; } = true;
 
-    public OutputValue(IMemberDiagnose<TOwnerType, TMemberValueType?> memberDiagnose, 
+    public OutputValue(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions,
         Action invokeOwnerPropertyChanged,
         Func<TMemberValueType?> getOriginalOutputValue,
         Action<EventHandler> attachToInputValueChanged) :
-        base(memberDiagnose, callerDefinitions)
+        base(memberDiagnosis, callerDefinitions)
     {
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
         _getOriginalValue = getOriginalOutputValue;

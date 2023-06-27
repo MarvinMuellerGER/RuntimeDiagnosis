@@ -1,15 +1,15 @@
 using System.ComponentModel;
-using RuntimeDiagnosis.Core.ObjectDiagnose;
+using RuntimeDiagnosis.Core.ObjectDiagnosis;
 
 namespace RuntimeDiagnosis.Core;
 
 public interface IDiagnosableObject : INotifyPropertyChanged
 {
-    public IObjectDiagnose ObjectDiagnose { get; }
+    public IObjectDiagnosis ObjectDiagnosis { get; }
 }
 
 public interface IDiagnosableObject<TOwnerType> : IDiagnosableObject 
     where TOwnerType : IDiagnosableObject
 {
-    public new IObjectDiagnose<TOwnerType> ObjectDiagnose { get; }
+    public new IObjectDiagnosis<TOwnerType> ObjectDiagnosis { get; }
 }

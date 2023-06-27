@@ -1,50 +1,50 @@
 ﻿using System.Diagnostics;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 using RuntimeDiagnosis.Kit;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 [DebuggerDisplay("{ToString()} ({ToCurrentValueString()})")]
-public class MemberDiagnose<TOwnerType, TMemberValueType> : IMemberDiagnose<TOwnerType, TMemberValueType?>
+public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    private readonly Action<IMemberDiagnose> _invokeOwnerPropertyChanged;
-    IObjectDiagnose IMemberDiagnose.ObjectDiagnose => ObjectDiagnose;
+    private readonly Action<IMemberDiagnosis> _invokeOwnerPropertyChanged;
+    IObjectDiagnosis IMemberDiagnosis.ObjectDiagnosis => ObjectDiagnosis;
 
-    public IObjectDiagnose<TOwnerType> ObjectDiagnose { get; }
+    public IObjectDiagnosis<TOwnerType> ObjectDiagnosis { get; }
     
     public string MemberName { get; }
 
-    IInputValue IMemberDiagnose.InputValue => InputValue;
+    IInputValue IMemberDiagnosis.InputValue => InputValue;
 
-    IInputValue<TMemberValueType?> IMemberDiagnose<TMemberValueType?>.InputValue => InputValue;
+    IInputValue<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.InputValue => InputValue;
 
     public IInputValue<TOwnerType, TMemberValueType?> InputValue { get; }
 
-    IOutputValue IMemberDiagnose.OutputValue => OutputValue;
+    IOutputValue IMemberDiagnosis.OutputValue => OutputValue;
 
-    IOutputValue<TMemberValueType?> IMemberDiagnose<TMemberValueType?>.OutputValue => OutputValue;
+    IOutputValue<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.OutputValue => OutputValue;
 
     public IOutputValue<TOwnerType, TMemberValueType?> OutputValue { get; }
 
-    IEnumerable<IDirectionValue> IMemberDiagnose.DirectionValues => DirectionValues;
+    IEnumerable<IDirectionValue> IMemberDiagnosis.DirectionValues => DirectionValues;
     
-    IEnumerable<IDirectionValue<TMemberValueType?>> IMemberDiagnose<TMemberValueType?>.DirectionValues => 
+    IEnumerable<IDirectionValue<TMemberValueType?>> IMemberDiagnosis<TMemberValueType?>.DirectionValues => 
         DirectionValues;
 
     public IEnumerable<IDirectionValue<TOwnerType, TMemberValueType?>> DirectionValues { get; }
 
-    public MemberDiagnose(in IObjectDiagnose<TOwnerType> objectDiagnose,
+    public MemberDiagnosis(in IObjectDiagnosis<TOwnerType> objectDiagnosis,
         in string memberName,
         IEnumerable<DirectionValueDefinition> inputCallerDefinitions,
         IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
-        Action<IMemberDiagnose> invokeOwnerPropertyChanged,
+        Action<IMemberDiagnosis> invokeOwnerPropertyChanged,
         Func<TMemberValueType?> getOriginalOutputValue,
         Action<TMemberValueType?> setCurrentInputValue)
     {
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
-        ObjectDiagnose = objectDiagnose;
+        ObjectDiagnosis = objectDiagnosis;
         MemberName = memberName;
         InputValue = new InputValue<TOwnerType, TMemberValueType?>(
             this, inputCallerDefinitions, setCurrentInputValue);
@@ -58,7 +58,7 @@ public class MemberDiagnose<TOwnerType, TMemberValueType> : IMemberDiagnose<TOwn
     
     public override string ToString() =>
         $"{GetType().GetNameWithoutGenericArity()} for {MemberName} of " +
-        $"{ObjectDiagnose.GetOwnerTypeString()}";
+        $"{ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
         $"{InputValue.ToCurrentValueString()}, {OutputValue.ToCurrentValueString()}";

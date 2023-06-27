@@ -1,6 +1,6 @@
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue;
 
 public sealed class InputValue<TOwnerType, TMemberValueType> : 
     DirectionValue<TOwnerType, TMemberValueType?>, IInputValue<TOwnerType, TMemberValueType?>
@@ -17,9 +17,9 @@ public sealed class InputValue<TOwnerType, TMemberValueType> :
         }
     }
     
-    public InputValue(IMemberDiagnose<TOwnerType, TMemberValueType?> memberDiagnose, 
+    public InputValue(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions, Action<TMemberValueType?> setCurrentValue) : 
-        base(memberDiagnose, callerDefinitions) =>
+        base(memberDiagnosis, callerDefinitions) =>
         _setCurrentValue = setCurrentValue;
 
     protected override void SetCurrentValue(TMemberValueType? value, bool setAgainEvenIfNotChanged = false)

@@ -1,6 +1,6 @@
-using RuntimeDiagnosis.Core.ObjectDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.Kit;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
@@ -8,8 +8,8 @@ public partial class SecondTestClassDiagnosable
 {
     public new bool SecondTestProperty
     {
-        get => _objectDiagnose.GetCurrentOutputMemberValue(GetOriginalOutputValueOfSecondTestProperty);
-        set => _objectDiagnose.SetOriginalInputMemberValue(SetCurrentInputValueOfSecondTestProperty, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(GetOriginalOutputValueOfSecondTestProperty);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(SetCurrentInputValueOfSecondTestProperty, value);
     }
 
     private bool GetOriginalOutputValueOfSecondTestProperty() => 
@@ -24,9 +24,9 @@ public partial class SecondTestClassDiagnosable
     private static IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty => 
         Array.Empty<DirectionValueDefinition>();
     
-    private IMemberDiagnose CreateMemberDiagnosisForSecondTestProperty(
-        ObjectDiagnose<SecondTestClassDiagnosable> objectDiagnose) =>
-        objectDiagnose.CreateMemberDiagnosis(nameof(SecondTestProperty), 
+    private IMemberDiagnosis CreateMemberDiagnosisForSecondTestProperty(
+        ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>
+        objectDiagnosis.CreateMemberDiagnosis(nameof(SecondTestProperty), 
             InputCallerDefinitionsForSecondTestProperty, 
             OutputCallerDefinitionsForSecondTestProperty,
             GetOriginalOutputValueOfSecondTestProperty, SetCurrentInputValueOfSecondTestProperty);

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose.DirectionValue.SingleValue;
+namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValue.SingleValue;
 
 public interface ISingleValue : IProvidesCurrentValueString, INotifyPropertyChanged, IEquatable<ISingleValue>
 {

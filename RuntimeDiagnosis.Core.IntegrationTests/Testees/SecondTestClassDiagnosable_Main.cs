@@ -1,16 +1,16 @@
 using System.ComponentModel;
-using RuntimeDiagnosis.Core.ObjectDiagnose;
-using RuntimeDiagnosis.Core.ObjectDiagnose.MemberDiagnose;
+using RuntimeDiagnosis.Core.ObjectDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 public partial class SecondTestClassDiagnosable : SecondTestClass, IDiagnosableObject<SecondTestClassDiagnosable>
 {
-    private ObjectDiagnose<SecondTestClassDiagnosable> _objectDiagnose = null!;
+    private ObjectDiagnosis<SecondTestClassDiagnosable> _objectDiagnosis = null!;
 
-    IObjectDiagnose IDiagnosableObject.ObjectDiagnose => ObjectDiagnose;
+    IObjectDiagnosis IDiagnosableObject.ObjectDiagnosis => ObjectDiagnosis;
 
-    public IObjectDiagnose<SecondTestClassDiagnosable> ObjectDiagnose => _objectDiagnose;
+    public IObjectDiagnosis<SecondTestClassDiagnosable> ObjectDiagnosis => _objectDiagnosis;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     
@@ -18,14 +18,14 @@ public partial class SecondTestClassDiagnosable : SecondTestClass, IDiagnosableO
         Initialize();
 
     private void Initialize() => 
-        _objectDiagnose = 
+        _objectDiagnosis = 
             ObjectDiagnosesManager.CreateNewObjectDiagnose(this, CreateMemberDiagnoses, InvokePropertyChanged);
 
-    private IEnumerable<IMemberDiagnose> CreateMemberDiagnoses(
-        ObjectDiagnose<SecondTestClassDiagnosable> objectDiagnose) =>
+    private IEnumerable<IMemberDiagnosis> CreateMemberDiagnoses(
+        ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>
         new[]
         {
-            CreateMemberDiagnosisForSecondTestProperty(objectDiagnose)
+            CreateMemberDiagnosisForSecondTestProperty(objectDiagnosis)
         };
 
     private void InvokePropertyChanged(string propertyName) => 
