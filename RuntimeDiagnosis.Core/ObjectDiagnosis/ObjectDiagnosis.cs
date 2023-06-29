@@ -21,12 +21,13 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
     [DebuggerDisplay($"{nameof(MemberDiagnoses)} for {{GetOwnerTypeString()}}")]
     public IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; }
 
-    public ObjectDiagnosis(TOwnerType owner, 
-        Func<ObjectDiagnosis<TOwnerType>, IEnumerable<IMemberDiagnosis>> createMemberDiagnoses, 
-        Action<string> invokePropertyChanged)
+    public ObjectDiagnosis(TOwnerType owner,
+        Action<string> invokePropertyChanged,
+        params Func<ObjectDiagnosis<TOwnerType>, IMemberDiagnosis>[] createMemberDiagnoseActions)
     {
         Owner = owner;
-        MemberDiagnoses = createMemberDiagnoses(this);
+        MemberDiagnoses = createMemberDiagnoseActions
+            .Select(createMemberDiagnose => createMemberDiagnose(this)).ToList();
         _invokeOwnerPropertyChanged = invokePropertyChanged;
         ObjectDiagnosesManager.AddNewObjectDiagnose(this);
     }
