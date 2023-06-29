@@ -19,7 +19,7 @@ public partial class TestClassDiagnosable : TestClass, IDiagnosableObject<TestCl
 
     private void Initialize() => 
         _objectDiagnosis = 
-            ObjectDiagnosesManager.CreateNewObjectDiagnose(this, CreateMemberDiagnoses, InvokePropertyChanged);
+            new ObjectDiagnosis<TestClassDiagnosable>(this, CreateMemberDiagnoses, InvokePropertyChanged);
 
     private IEnumerable<IMemberDiagnosis> CreateMemberDiagnoses(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
         new[]

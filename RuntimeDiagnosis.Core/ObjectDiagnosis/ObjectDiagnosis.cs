@@ -19,12 +19,16 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
     public Type OwnerBaseType => Owner.GetType().BaseType ?? Owner.GetType();
 
     [DebuggerDisplay($"{nameof(MemberDiagnoses)} for {{GetOwnerTypeString()}}")]
-    public IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; internal set; } = null!;
+    public IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; }
 
-    internal ObjectDiagnosis(TOwnerType owner, Action<string> invokePropertyChanged)
+    public ObjectDiagnosis(TOwnerType owner, 
+        Func<ObjectDiagnosis<TOwnerType>, IEnumerable<IMemberDiagnosis>> createMemberDiagnoses, 
+        Action<string> invokePropertyChanged)
     {
-        _invokeOwnerPropertyChanged = invokePropertyChanged;
         Owner = owner;
+        MemberDiagnoses = createMemberDiagnoses(this);
+        _invokeOwnerPropertyChanged = invokePropertyChanged;
+        ObjectDiagnosesManager.AddNewObjectDiagnose(this);
     }
 
     public override string ToString() =>

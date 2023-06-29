@@ -19,7 +19,7 @@ public partial class SecondTestClassDiagnosable : SecondTestClass, IDiagnosableO
 
     private void Initialize() => 
         _objectDiagnosis = 
-            ObjectDiagnosesManager.CreateNewObjectDiagnose(this, CreateMemberDiagnoses, InvokePropertyChanged);
+            new ObjectDiagnosis<SecondTestClassDiagnosable>(this, CreateMemberDiagnoses, InvokePropertyChanged);
 
     private IEnumerable<IMemberDiagnosis> CreateMemberDiagnoses(
         ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>
