@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
@@ -9,8 +10,15 @@ public partial class TestClassDiagnosable
 {
     public new bool TestProperty
     {
-        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => base.TestProperty);
-        set => _objectDiagnosis.SetOriginalInputMemberValue(() => base.TestProperty, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => BaseTestProperty);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(() => BaseTestProperty, value);
+    }
+
+    private bool BaseTestProperty
+    {
+        get => base.TestProperty;
+        [UsedImplicitly]
+        set => base.TestProperty = value;
     }
 
     private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty => new[]
@@ -25,7 +33,7 @@ public partial class TestClassDiagnosable
     
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty),
-            () => base.TestProperty, 
+            () => BaseTestProperty, 
             InputCallerDefinitionsForTestProperty, 
             OutputCallerDefinitionsForTestProperty);
 }
