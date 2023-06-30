@@ -7,6 +7,12 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 public partial class TestClassDiagnosable
 {
+    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestField = 
+        Array.Empty<DirectionValueDefinition>();
+    
+    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestField = 
+        Array.Empty<DirectionValueDefinition>();
+
     public new bool TestField
     {
         get => _objectDiagnosis.GetMemberValue(() => BaseTestField);
@@ -20,12 +26,6 @@ public partial class TestClassDiagnosable
         set => base.TestField = value;
     }
 
-    private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestField => 
-        Array.Empty<DirectionValueDefinition>();
-    
-    private static IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestField => 
-        Array.Empty<DirectionValueDefinition>();
-    
     private IMemberDiagnosis CreateMemberDiagnosisForTestField(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestField),
             () => BaseTestField,

@@ -7,6 +7,12 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 public partial class SecondTestClassDiagnosable
 {
+    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty = 
+        Array.Empty<DirectionValueDefinition>();
+    
+    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty = 
+        Array.Empty<DirectionValueDefinition>();
+    
     public new bool SecondTestProperty
     {
         get => _objectDiagnosis.GetMemberValue(() => BaseSecondTestProperty);
@@ -19,12 +25,6 @@ public partial class SecondTestClassDiagnosable
         [UsedImplicitly]
         set => base.SecondTestProperty = value;
     }
-
-    private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty => 
-        Array.Empty<DirectionValueDefinition>();
-    
-    private static IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty => 
-        Array.Empty<DirectionValueDefinition>();
     
     private IMemberDiagnosis CreateMemberDiagnosisForSecondTestProperty(
         ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>

@@ -8,6 +8,16 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
 public partial class TestClassDiagnosable
 {
+    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
+    {
+        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty))
+    };
+    
+    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
+    {
+        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty), Output)
+    };
+
     public new bool TestProperty
     {
         get => _objectDiagnosis.GetMemberValue(() => BaseTestProperty);
@@ -21,16 +31,6 @@ public partial class TestClassDiagnosable
         set => base.TestProperty = value;
     }
 
-    private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty => new[]
-    {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty))
-    };
-    
-    private static IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestProperty => new[]
-    {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty), Output)
-    };
-    
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty),
             () => BaseTestProperty, 
