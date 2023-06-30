@@ -5,6 +5,7 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
 
 public interface IObjectDiagnosis
 {
+    internal Action<string> InvokeOwnerPropertyChanged { get; }
     IDiagnosableObject Owner { get; }
     IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; }
     Type OwnerBaseType { get; }

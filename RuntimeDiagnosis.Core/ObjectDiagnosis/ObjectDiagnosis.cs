@@ -14,6 +14,8 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
 {
     private readonly Action<string> _invokeOwnerPropertyChanged;
 
+    Action<string> IObjectDiagnosis.InvokeOwnerPropertyChanged => _invokeOwnerPropertyChanged;
+
     IDiagnosableObject IObjectDiagnosis.Owner => Owner;
     
     public TOwnerType Owner { get; }
@@ -79,9 +81,5 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
         IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
         IEnumerable<DirectionValueDefinition> outputCallerDefinitions) =>
         new MemberDiagnosis<TOwnerType, TMemberValueType>(
-                this, memberName, memberExpression, inputCallerDefinitions, outputCallerDefinitions,
-                InvokeOwnerPropertyChanged);
-
-    private void InvokeOwnerPropertyChanged(IMemberDiagnosis memberDiagnosis) =>
-        _invokeOwnerPropertyChanged(memberDiagnosis.MemberName);
+                this, memberName, memberExpression, inputCallerDefinitions, outputCallerDefinitions);
 }

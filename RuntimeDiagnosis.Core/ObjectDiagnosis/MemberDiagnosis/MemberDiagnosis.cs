@@ -12,7 +12,6 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
     where TOwnerType : IDiagnosableObject
 {
     private readonly MemberAccessor<TMemberValueType> _memberAccessor;
-    private readonly Action<IMemberDiagnosis> _invokeOwnerPropertyChanged;
 
     TMemberValueType? IMemberDiagnosis<TMemberValueType?>.MemberValue
     {
@@ -48,18 +47,16 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
         in string memberName,
         Expression<Func<TMemberValueType?>> memberExpression,
         IEnumerable<DirectionValueDefinition> inputCallerDefinitions,
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
-        Action<IMemberDiagnosis> invokeOwnerPropertyChanged)
+        IEnumerable<DirectionValueDefinition> outputCallerDefinitions)
     {
         ObjectDiagnosis = objectDiagnosis;
         MemberName = memberName;
         _memberAccessor = new MemberAccessor<TMemberValueType>(memberExpression);
-        _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
         
         InputValueDiagnosis = new InputValueDiagnosis<TOwnerType, TMemberValueType?>(
             this, inputCallerDefinitions);
         OutputValueDiagnosis = new OutputValueDiagnosis<TOwnerType, TMemberValueType?>(
-            this, outputCallerDefinitions, InvokeOwnerPropertyChanged,
+            this, outputCallerDefinitions,
             inputValueChanged => 
                 InputValueDiagnosis.CurrentValue.ValueChangedUnified += inputValueChanged);
         
@@ -76,7 +73,4 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
 
     public string ToCurrentValueString() =>
         $"{InputValueDiagnosis.ToCurrentValueString()}, {OutputValueDiagnosis.ToCurrentValueString()}";
-    
-    private void InvokeOwnerPropertyChanged() =>
-        _invokeOwnerPropertyChanged(this);
 }
