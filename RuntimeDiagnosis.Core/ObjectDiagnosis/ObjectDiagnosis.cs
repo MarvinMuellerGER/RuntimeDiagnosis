@@ -53,7 +53,7 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
         [CallerMemberName] string memberName = "") =>
         GetMemberDiagnose(memberName) as MemberDiagnosis<TOwnerType, TMemberValueType?>;
     
-    public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(
+    public TMemberValueType? GetMemberValue<TMemberValueType>(
         in Expression<Func<TMemberValueType?>> memberExpression,
         [CallerMemberName] string memberName = "")
     {
@@ -63,7 +63,7 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
             memberDiagnose.OutputValueDiagnosis.Value;
     }
     
-    public void SetOriginalInputMemberValue<TMemberValueType>(in Expression<Func<TMemberValueType?>> memberExpression, 
+    public void SetMemberValue<TMemberValueType>(in Expression<Func<TMemberValueType?>> memberExpression, 
         in TMemberValueType? value, [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType?>(memberName);

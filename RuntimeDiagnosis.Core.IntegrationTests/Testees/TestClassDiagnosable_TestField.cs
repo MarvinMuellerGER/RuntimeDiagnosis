@@ -9,8 +9,8 @@ public partial class TestClassDiagnosable
 {
     public new bool TestField
     {
-        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => BaseTestField);
-        set => _objectDiagnosis.SetOriginalInputMemberValue(() => BaseTestField, value);
+        get => _objectDiagnosis.GetMemberValue(() => BaseTestField);
+        set => _objectDiagnosis.SetMemberValue(() => BaseTestField, value);
     }
 
     private bool BaseTestField
