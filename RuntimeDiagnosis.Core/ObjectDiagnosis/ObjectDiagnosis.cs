@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.Kit;
 using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
@@ -50,34 +52,35 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
         GetMemberDiagnose(memberName) as MemberDiagnosis<TOwnerType, TMemberValueType?>;
     
     public TMemberValueType? GetCurrentOutputMemberValue<TMemberValueType>(
-        in Func<TMemberValueType?> getMemberValue,
+        in Expression<Func<TMemberValueType?>> memberExpression,
         [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType>(memberName);
-        return memberDiagnose == null ? getMemberValue() : memberDiagnose.OutputValueDiagnosis.Value;
+        return memberDiagnose == null ? 
+            new MemberAccessor<TMemberValueType>(memberExpression).Value : 
+            memberDiagnose.OutputValueDiagnosis.Value;
     }
     
-    public void SetOriginalInputMemberValue<TMemberValueType>(in Action<TMemberValueType?> setMemberValue, 
+    public void SetOriginalInputMemberValue<TMemberValueType>(in Expression<Func<TMemberValueType?>> memberExpression, 
         in TMemberValueType? value, [CallerMemberName] string memberName = "")
     {
         var memberDiagnose = GetMemberDiagnose<TMemberValueType?>(memberName);
         if (memberDiagnose == null)
         {
-            setMemberValue(value);
+            new MemberAccessor<TMemberValueType>(memberExpression).Value = value;
             return;
         }
         memberDiagnose.InputValueDiagnosis.Value = value;
     }
 
     public IMemberDiagnosis CreateMemberDiagnosis<TMemberValueType>(
-        in string memberName, 
+        in string memberName,
+        Expression<Func<TMemberValueType?>> memberExpression, 
         IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions,
-        Func<TMemberValueType?> getMemberValue,
-        Action<TMemberValueType?> setMemberValue) =>
+        IEnumerable<DirectionValueDefinition> outputCallerDefinitions) =>
         new MemberDiagnosis<TOwnerType, TMemberValueType>(
-                this, memberName, inputCallerDefinitions, outputCallerDefinitions,
-                InvokeOwnerPropertyChanged, getMemberValue, setMemberValue);
+                this, memberName, memberExpression, inputCallerDefinitions, outputCallerDefinitions,
+                InvokeOwnerPropertyChanged);
 
     private void InvokeOwnerPropertyChanged(IMemberDiagnosis memberDiagnosis) =>
         _invokeOwnerPropertyChanged(memberDiagnosis.MemberName);

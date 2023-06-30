@@ -8,7 +8,6 @@ public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> :
     where TOwnerType : IDiagnosableObject
 {
     private readonly Action _invokeOwnerPropertyChanged;
-    private readonly Func<TMemberValueType?> _getOriginalValue;
 
     TMemberValueType? IOutputValueDiagnosis<TMemberValueType?>.Value
     {
@@ -27,12 +26,10 @@ public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> :
     public OutputValueDiagnosis(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions,
         Action invokeOwnerPropertyChanged,
-        Func<TMemberValueType?> getOriginalOutputValue,
         Action<EventHandler> attachToInputValueChanged) :
         base(memberDiagnosis, callerDefinitions)
     {
         _invokeOwnerPropertyChanged = invokeOwnerPropertyChanged;
-        _getOriginalValue = getOriginalOutputValue;
 
         AttachEventHandlers(attachToInputValueChanged);
     }
@@ -59,6 +56,6 @@ public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> :
     {
         if (DiagnoseActive.Value && !UpdateOriginalValueWhenDiagnosisActive)
             return;
-        OriginalValueInternal.Value = _getOriginalValue();
+        OriginalValueInternal.Value = MemberDiagnosis.MemberValue;
     }
 }

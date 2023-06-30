@@ -6,8 +6,6 @@ public sealed class InputValueDiagnosis<TOwnerType, TMemberValueType> :
     DirectionValueDiagnosis<TOwnerType, TMemberValueType?>, IInputValueDiagnosis<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    private readonly Action<TMemberValueType?> _setCurrentValue;
-    
     TMemberValueType? IInputValueDiagnosis<TMemberValueType?>.Value
     {
         set
@@ -18,13 +16,13 @@ public sealed class InputValueDiagnosis<TOwnerType, TMemberValueType> :
     }
     
     public InputValueDiagnosis(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
-        IEnumerable<DirectionValueDefinition> callerDefinitions, Action<TMemberValueType?> setCurrentValue) : 
-        base(memberDiagnosis, callerDefinitions) =>
-        _setCurrentValue = setCurrentValue;
+        IEnumerable<DirectionValueDefinition> callerDefinitions) : 
+        base(memberDiagnosis, callerDefinitions)
+    { }
 
     protected override void SetCurrentValue(TMemberValueType? value, bool setAgainEvenIfNotChanged = false)
     {
-        _setCurrentValue(value);
+        MemberDiagnosis.MemberValue = value;
         base.SetCurrentValue(value, setAgainEvenIfNotChanged);
     }
 }

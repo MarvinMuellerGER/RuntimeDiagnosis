@@ -8,15 +8,9 @@ public partial class SecondTestClassDiagnosable
 {
     public new bool SecondTestProperty
     {
-        get => _objectDiagnosis.GetCurrentOutputMemberValue(GetOriginalOutputValueOfSecondTestProperty);
-        set => _objectDiagnosis.SetOriginalInputMemberValue(SetCurrentInputValueOfSecondTestProperty, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => base.SecondTestProperty);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(() => base.SecondTestProperty, value);
     }
-
-    private bool GetOriginalOutputValueOfSecondTestProperty() => 
-        base.SecondTestProperty;
-    
-    private void SetCurrentInputValueOfSecondTestProperty(bool value) => 
-        base.SecondTestProperty = value;
 
     private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty => 
         Array.Empty<DirectionValueDefinition>();
@@ -26,8 +20,8 @@ public partial class SecondTestClassDiagnosable
     
     private IMemberDiagnosis CreateMemberDiagnosisForSecondTestProperty(
         ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>
-        objectDiagnosis.CreateMemberDiagnosis(nameof(SecondTestProperty), 
+        objectDiagnosis.CreateMemberDiagnosis(nameof(SecondTestProperty),
+            () => base.SecondTestProperty,
             InputCallerDefinitionsForSecondTestProperty, 
-            OutputCallerDefinitionsForSecondTestProperty,
-            GetOriginalOutputValueOfSecondTestProperty, SetCurrentInputValueOfSecondTestProperty);
+            OutputCallerDefinitionsForSecondTestProperty);
 }

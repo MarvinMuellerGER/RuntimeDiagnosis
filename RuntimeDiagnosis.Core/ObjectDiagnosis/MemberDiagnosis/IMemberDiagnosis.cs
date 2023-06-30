@@ -13,6 +13,7 @@ public interface IMemberDiagnosis : IProvidesCurrentValueString
 
 public interface IMemberDiagnosis<TMemberValueType> : IMemberDiagnosis
 {
+    internal TMemberValueType MemberValue { get; set; }
     new IInputValueDiagnosis<TMemberValueType?> InputValueDiagnosis { get; }
     new IOutputValueDiagnosis<TMemberValueType?> OutputValueDiagnosis { get; }
     new IEnumerable<IDirectionValueDiagnosis<TMemberValueType?>> DirectionValues { get; }

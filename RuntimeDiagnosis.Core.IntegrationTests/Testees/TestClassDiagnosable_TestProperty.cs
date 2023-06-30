@@ -9,15 +9,9 @@ public partial class TestClassDiagnosable
 {
     public new bool TestProperty
     {
-        get => _objectDiagnosis.GetCurrentOutputMemberValue(GetOriginalOutputValueOfTestProperty);
-        set => _objectDiagnosis.SetOriginalInputMemberValue(SetCurrentInputValueOfTestProperty, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => base.TestProperty);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(() => base.TestProperty, value);
     }
-
-    private bool GetOriginalOutputValueOfTestProperty() => 
-        base.TestProperty;
-    
-    private void SetCurrentInputValueOfTestProperty(bool value) => 
-        base.TestProperty = value;
 
     private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty => new[]
     {
@@ -30,8 +24,8 @@ public partial class TestClassDiagnosable
     };
     
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
-        objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty), 
+        objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty),
+            () => base.TestProperty, 
             InputCallerDefinitionsForTestProperty, 
-            OutputCallerDefinitionsForTestProperty,
-            GetOriginalOutputValueOfTestProperty, SetCurrentInputValueOfTestProperty);
+            OutputCallerDefinitionsForTestProperty);
 }

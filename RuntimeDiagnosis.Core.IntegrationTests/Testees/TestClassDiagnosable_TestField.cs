@@ -8,15 +8,9 @@ public partial class TestClassDiagnosable
 {
     public new bool TestField
     {
-        get => _objectDiagnosis.GetCurrentOutputMemberValue(GetOriginalOutputValueOfTestField);
-        set => _objectDiagnosis.SetOriginalInputMemberValue(SetCurrentInputValueOfTestField, value);
+        get => _objectDiagnosis.GetCurrentOutputMemberValue(() => base.TestField);
+        set => _objectDiagnosis.SetOriginalInputMemberValue(() => base.TestField, value);
     }
-
-    private bool GetOriginalOutputValueOfTestField() => 
-        base.TestField;
-    
-    private void SetCurrentInputValueOfTestField(bool value) => 
-        base.TestField = value;
 
     private static IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestField => 
         Array.Empty<DirectionValueDefinition>();
@@ -26,7 +20,7 @@ public partial class TestClassDiagnosable
     
     private IMemberDiagnosis CreateMemberDiagnosisForTestField(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestField),
+            () => base.TestField,
             InputCallerDefinitionsForTestField, 
-            OutputCallerDefinitionsForTestField,
-            GetOriginalOutputValueOfTestField, SetCurrentInputValueOfTestField);
+            OutputCallerDefinitionsForTestField);
 }
