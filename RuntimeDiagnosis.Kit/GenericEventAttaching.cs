@@ -1,6 +1,6 @@
 namespace RuntimeDiagnosis.Kit;
 
-public static class EventAttacher
+public static class GenericEventAttaching
 {
     public static void AttachToEvent(Action<EventHandler>? attach, EventHandler eventHandler) => 
         attach?.Invoke(eventHandler);

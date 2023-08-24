@@ -1,5 +1,5 @@
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
-using static RuntimeDiagnosis.Kit.EventAttacher;
+using static RuntimeDiagnosis.Kit.GenericEventAttaching;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
