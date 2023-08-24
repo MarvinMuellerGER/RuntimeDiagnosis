@@ -37,7 +37,7 @@ public class ObjectDiagnosis<TOwnerType> : IObjectDiagnosis<TOwnerType>
     }
 
     public override string ToString() =>
-        $"{typeof(ObjectDiagnosis<TOwnerType>).GetNameWithoutGenericArity()} for {GetOwnerTypeString()}";
+        $"{this.GetTypeNameWithoutGenericArity()} for {GetOwnerTypeString()}";
 
     public string GetOwnerTypeString() =>
         $"{OwnerBaseType.Name} object";

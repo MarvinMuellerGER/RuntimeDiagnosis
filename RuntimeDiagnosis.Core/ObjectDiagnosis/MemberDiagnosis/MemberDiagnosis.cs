@@ -68,7 +68,7 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
     }
     
     public override string ToString() =>
-        $"{GetType().GetNameWithoutGenericArity()} for {MemberName} of " +
+        $"{this.GetTypeNameWithoutGenericArity()} for {MemberName} of " +
         $"{ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>

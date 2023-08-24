@@ -1,10 +1,8 @@
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
-using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
-public interface IDirectionValueDiagnosis : 
-    IProvidesNameWithoutGenericArity, IProvidesCurrentValueString, IEquatable<IDirectionValueDiagnosis?>
+public interface IDirectionValueDiagnosis : IProvidesCurrentValueString, IEquatable<IDirectionValueDiagnosis?>
 {
     enum ValueDirectionType
     {

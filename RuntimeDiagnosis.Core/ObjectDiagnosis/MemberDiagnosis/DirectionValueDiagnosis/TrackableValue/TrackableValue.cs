@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
@@ -117,7 +118,7 @@ public class TrackableValue<TOwnerType, TMemberValueType, TValueType> :
         HashCode.Combine(DirectionValueDiagnosis, Name);
 
     public override string ToString() =>
-        $"{Name} of {DirectionValueDiagnosis.GetNameWithoutGenericArity()} for " +
+        $"{Name} of {DirectionValueDiagnosis.GetTypeNameWithoutGenericArity()} for " +
         $"{DirectionValueDiagnosis.MemberDiagnosis.MemberName} of " +
         $"{DirectionValueDiagnosis.MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
 

@@ -135,16 +135,12 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
         HashCode.Combine(MemberDiagnosis, GetType());
     
     public override string ToString() =>
-        $"{GetNameWithoutGenericArity()} for {MemberDiagnosis.MemberName} of " +
+        $"{this.GetTypeNameWithoutGenericArity()} for {MemberDiagnosis.MemberName} of " +
         $"{MemberDiagnosis.ObjectDiagnosis.GetOwnerTypeString()}";
 
     public string ToCurrentValueString() =>
-        $"{GetNameWithoutGenericArity()}: {{{ToShortCurrentValueString()}}}";
-
-    public string GetNameWithoutGenericArity() =>
-        GetType().GetNameWithoutGenericArity();
+        $"{this.GetTypeNameWithoutGenericArity()}: {{{ToShortCurrentValueString()}}}";
     
-
     public bool SetDiagnoseValueAgain()
     {
         if (!DiagnoseActive.Value)
