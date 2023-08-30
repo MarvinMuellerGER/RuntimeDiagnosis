@@ -4,6 +4,7 @@ Runtime diagnoses to read and manipulate members in .NET based projects.
 This diagnosis is made possible by generating either derived classes (where necessary from the existing architecture) or decorators (more advisable, as they can be easily integrated via dependency injection containers). The members are encapsulated in these and supplemented with logic for the diagnosis.
 
 Note 1: In the following, getters and setters are used not only for properties but also for fields. This is because fields are encapsulated in properties to enable diagnosis.
+
 Note 2: The following refers to input and output data in relation to members. What is meant by this is:
 - for fields and properties: input = setter; output = getter
 - for methods: input = parameter; output = return value
