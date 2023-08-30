@@ -1,5 +1,6 @@
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
+// TODO: Write Summaries
 public interface ITrackableValueInternal<TValueType> : ITrackableValue<TValueType>
 {
     internal void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false);

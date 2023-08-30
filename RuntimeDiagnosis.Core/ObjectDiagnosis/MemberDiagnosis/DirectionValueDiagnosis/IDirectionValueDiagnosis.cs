@@ -2,6 +2,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagno
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
+// TODO: Write Summaries
 public interface IDirectionValueDiagnosis : IProvidesCurrentValueString, IEquatable<IDirectionValueDiagnosis?>
 {
     enum ValueDirectionType

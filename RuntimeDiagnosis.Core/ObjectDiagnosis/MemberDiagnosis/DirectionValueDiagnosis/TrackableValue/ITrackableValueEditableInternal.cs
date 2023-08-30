@@ -1,5 +1,6 @@
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
+// TODO: Write Summaries
 public interface ITrackableValueEditableInternal : ITrackableValueEditable
 {
     internal new bool EditingCurrentlyAllowed { set; }

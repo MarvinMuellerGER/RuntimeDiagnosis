@@ -7,6 +7,7 @@ using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
 
+// TODO: Implement Unit Tests
 [DebuggerDisplay("{ToString()}")]
 public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwnerType>
     where TOwnerType : IDiagnosableObjectInternal<TOwnerType>

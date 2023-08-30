@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
+// TODO: Write Summaries
 public interface IDirectionValueDiagnosesFinder
 {
     IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(

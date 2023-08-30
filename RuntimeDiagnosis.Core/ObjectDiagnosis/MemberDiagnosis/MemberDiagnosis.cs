@@ -7,6 +7,7 @@ using RuntimeDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
+// TODO: Implement Unit Tests
 [DebuggerDisplay("{ToString()} ({ToCurrentValueString()})")]
 public sealed class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosisInternal<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject

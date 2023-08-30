@@ -1,5 +1,6 @@
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
+// TODO: Write Summaries
 public interface IOutputValueDiagnosis : IDirectionValueDiagnosis
 {
     bool UpdateWhenInputValueChanged { get; set; }

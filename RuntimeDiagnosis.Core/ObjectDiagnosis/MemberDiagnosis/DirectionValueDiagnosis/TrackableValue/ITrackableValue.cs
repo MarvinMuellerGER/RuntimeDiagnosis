@@ -2,6 +2,7 @@ using System.ComponentModel;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 
+// TODO: Write Summaries
 public interface ITrackableValue : IProvidesCurrentValueString, INotifyPropertyChanged, IEquatable<ITrackableValue>
 {
     string Name { get; }

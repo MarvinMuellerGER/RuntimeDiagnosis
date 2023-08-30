@@ -3,6 +3,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagno
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
+// TODO: Write Summaries
 public interface IMemberDiagnosisInternal<TOwnerType, TMemberValueType> : IMemberDiagnosis<TOwnerType, TMemberValueType>
     where TOwnerType : IDiagnosableObject
 {

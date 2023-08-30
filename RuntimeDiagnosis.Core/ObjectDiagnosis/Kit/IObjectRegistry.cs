@@ -1,5 +1,6 @@
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.Kit;
 
+// TODO: Write Summaries
 public interface IObjectRegistry
 {
     IEnumerable<object> RegisteredObjects { get; }

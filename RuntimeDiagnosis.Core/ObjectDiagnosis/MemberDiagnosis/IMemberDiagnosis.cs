@@ -2,6 +2,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagno
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
+// TODO: Write Summaries
 public interface IMemberDiagnosis : IProvidesCurrentValueString
 {
     IObjectDiagnosis ObjectDiagnosis { get; }

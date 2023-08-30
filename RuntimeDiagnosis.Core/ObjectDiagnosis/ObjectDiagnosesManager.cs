@@ -2,6 +2,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis.Kit;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
 
+// TODO: Implement Unit Tests
 public sealed class ObjectDiagnosesManager : IObjectDiagnosesManagerInternal
 {
     private readonly IObjectRegistryInternal<IObjectDiagnosis> _objectRegistry;

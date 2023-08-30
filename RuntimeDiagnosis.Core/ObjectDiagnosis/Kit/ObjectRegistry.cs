@@ -1,5 +1,6 @@
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.Kit;
 
+// TODO: Implement Unit Tests
 public sealed class ObjectRegistry<T> : IObjectRegistryInternal<T>
 {
     private readonly List<T> _registeredObjectsInternal = new();

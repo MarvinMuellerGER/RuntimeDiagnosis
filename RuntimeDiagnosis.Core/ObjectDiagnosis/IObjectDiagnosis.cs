@@ -3,6 +3,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
 
+// TODO: Write Summaries
 public interface IObjectDiagnosis
 {
     internal Action<string> InvokeOwnerPropertyChanged { get; }
