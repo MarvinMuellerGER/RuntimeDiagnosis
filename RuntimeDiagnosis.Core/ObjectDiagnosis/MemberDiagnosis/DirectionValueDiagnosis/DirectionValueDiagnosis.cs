@@ -8,28 +8,33 @@ using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValu
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
 [DebuggerDisplay("{ToString()} ({ToShortCurrentValueString()})")]
-public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>
+public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : 
+    IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    private readonly List<DirectionValueDefinition> _callerDefinitions;
+    private readonly IObjectDiagnosesManagerInternal _objectDiagnosesManager;
+    private readonly IDirectionValueDiagnosesFinder _directionValueDiagnosesFinder;
     private readonly List<IDirectionValueDiagnosis> _callers = new();
-    private readonly TrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> _diagnoseValue;
-    private readonly TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> _currentValueInternal;
+    private List<DirectionValueDefinition> _callerDefinitions = null!;
+    private readonly ITrackableValueAlwaysEditableInternal<TOwnerType, TMemberValueType?, bool> _diagnoseActive;
+    private readonly ITrackableValueEditableInternal<TOwnerType, TMemberValueType?, TMemberValueType?> _diagnoseValue;
+    private readonly ITrackableValueInternal<TOwnerType, TMemberValueType?, TMemberValueType?> _currentValueInternal;
     
-    private protected readonly TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValueInternal;
+    private protected readonly 
+        ITrackableValueInternal<TOwnerType, TMemberValueType?, TMemberValueType?> OriginalValueInternal;
     
     private IDirectionValueDiagnosis? _currentCaller;
 
-    public ValueDirectionType ValueDirection { get; }
+    public ValueDirectionType ValueDirection { get; private set; }
 
     IMemberDiagnosis IDirectionValueDiagnosis.MemberDiagnosis => MemberDiagnosis;
 
     IMemberDiagnosis<TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.MemberDiagnosis => MemberDiagnosis;
 
-    IMemberDiagnosis<TOwnerType, TMemberValueType?> IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>.MemberDiagnosis => 
-        MemberDiagnosis;
+    IMemberDiagnosis<TOwnerType, TMemberValueType?> 
+        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>.MemberDiagnosis => MemberDiagnosis;
 
-    public IMemberDiagnosis<TOwnerType, TMemberValueType?> MemberDiagnosis { get; }
+    public IMemberDiagnosis<TOwnerType, TMemberValueType?> MemberDiagnosis { get; private set; } = null!;
 
     public IEnumerable<IDirectionValueDiagnosis> Callers => _callers;
 
@@ -40,13 +45,13 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
 
     ITrackableValueAlwaysEditable<TMemberValueType?, bool> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseActive => 
         DiagnoseActive;
-    
-    public ITrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive { get; }
+
+    public ITrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool> DiagnoseActive => _diagnoseActive;
 
     ITrackableValueEditable IDirectionValueDiagnosis.DiagnoseValue => DiagnoseValue;
 
-    ITrackableValueEditable<TMemberValueType?, TMemberValueType?> IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseValue => 
-        DiagnoseValue;
+    ITrackableValueEditable<TMemberValueType?, TMemberValueType?> 
+        IDirectionValueDiagnosis<TMemberValueType?>.DiagnoseValue => DiagnoseValue;
 
     public ITrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?> DiagnoseValue => _diagnoseValue;
     
@@ -71,46 +76,65 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
     }
 
     public event JustCalledEventHandler? JustCalled;
-    
-    protected DirectionValueDiagnosis(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
+
+    protected DirectionValueDiagnosis(
+        IObjectDiagnosesManagerInternal objectDiagnosesManager,
+        IDirectionValueDiagnosesFinder directionValueDiagnosesFinder,
+        ITrackableValueAlwaysEditableInternal<TOwnerType,TMemberValueType?,bool> diagnoseActive,
+        ITrackableValueEditableInternal<TOwnerType, TMemberValueType?, TMemberValueType?> diagnoseValue,
+        ITrackableValueInternal<TOwnerType,TMemberValueType?,TMemberValueType?> originalValue,
+        ITrackableValueInternal<TOwnerType,TMemberValueType?,TMemberValueType?> currentValue)
+    {
+        _objectDiagnosesManager = objectDiagnosesManager;
+        _directionValueDiagnosesFinder = directionValueDiagnosesFinder;
+        _diagnoseActive = diagnoseActive;
+        _diagnoseValue = diagnoseValue;
+        OriginalValueInternal = originalValue;
+        _currentValueInternal = currentValue;
+    }
+
+    protected void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
         IEnumerable<DirectionValueDefinition> callerDefinitions)
     {
+        MemberDiagnosis = memberDiagnosis;
+        
         ValueDirection = this is IInputValueDiagnosis ? Input : Output;
         
-        DiagnoseActive = 
-            new TrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, bool>(this, nameof(DiagnoseActive));
-        _diagnoseValue = 
-            new TrackableValueEditable<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(DiagnoseValue));
-        OriginalValueInternal = 
-            new TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(OriginalValue));
-        _currentValueInternal = 
-            new TrackableValue<TOwnerType, TMemberValueType?, TMemberValueType?>(this, nameof(CurrentValue));
+        _diagnoseActive.Initialize(this, nameof(DiagnoseActive));
+        _diagnoseValue.Initialize(this, nameof(DiagnoseValue));
+        OriginalValueInternal.Initialize(this, nameof(OriginalValue));
+        _currentValueInternal.Initialize(this, nameof(CurrentValue));
         
-        MemberDiagnosis = memberDiagnosis;
         _callerDefinitions = callerDefinitions.ToList();
 
         AttachEventHandlers();
         GetCallersFromKnownObjectDiagnosesByCallerDefinitions();
     }
     
-    public static bool operator ==(DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis? obj2) =>
-        obj1.Equals(obj2);
-
-    public static bool operator !=(DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis? obj2) => 
-        !(obj1 == obj2);
-    
     public static bool operator ==(
-        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis<TMemberValueType?>? obj2) =>
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis? obj2) =>
         obj1.Equals(obj2);
 
     public static bool operator !=(
-        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis<TMemberValueType?>? obj2) => 
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1, IDirectionValueDiagnosis? obj2) =>
         !(obj1 == obj2);
     
-    public static bool operator ==(DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj, TMemberValueType? value) =>
+    public static bool operator ==(
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1,
+        IDirectionValueDiagnosis<TMemberValueType?>? obj2) =>
+        obj1.Equals(obj2);
+
+    public static bool operator !=(
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj1,
+        IDirectionValueDiagnosis<TMemberValueType?>? obj2) =>
+        !(obj1 == obj2);
+    
+    public static bool operator ==(
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj, TMemberValueType? value) =>
         obj.Equals(value);
 
-    public static bool operator !=(DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj, TMemberValueType? value) => 
+    public static bool operator !=(
+        DirectionValueDiagnosis<TOwnerType, TMemberValueType> obj, TMemberValueType? value) =>
         !(obj == value);
 
     public bool Equals(IDirectionValueDiagnosis? other) =>
@@ -157,7 +181,7 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
 
     private void AttachEventHandlers()
     {
-        ObjectDiagnosesManager.NewObjectDiagnoseCreated += OnNewObjectDiagnoseCreated;
+        _objectDiagnosesManager.NewObjectDiagnoseCreated += OnNewObjectDiagnoseCreated;
         
         OriginalValue.ValueChangedUnified += OnValueChanged;
         DiagnoseActive.ValueChangedUnified += OnValueChanged;
@@ -175,12 +199,12 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
 
     private void GetCallersFromKnownObjectDiagnosesByCallerDefinitions() => 
         AddNewCallers(
-            DirectionValueDiagnosesFinder.GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
+            _directionValueDiagnosesFinder.GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
                 _callerDefinitions));
     
     private void GetCallersFromObjectDiagnoseByCallerDefinitions(IObjectDiagnosis objectDiagnosis) => 
         AddNewCallers(
-            DirectionValueDiagnosesFinder.GetDirectionValuesFromObjectDiagnoseByDefinitions(objectDiagnosis,
+            _directionValueDiagnosesFinder.GetDirectionValuesFromObjectDiagnoseByDefinitions(objectDiagnosis,
                 _callerDefinitions));
 
     private void AddNewCallers(IEnumerable<IDirectionValueDiagnosis> newCallers)
@@ -207,6 +231,6 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> : ID
     protected void InvokeJustCalled()
     {
         JustCalled?.Invoke(this, CurrentCaller);
-        CurrentCaller = null;
+        _currentCaller = null;
     }
 }

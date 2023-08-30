@@ -26,7 +26,7 @@ public partial class TestClassDiagnosable
         set => base.TestField = value;
     }
 
-    private IMemberDiagnosis CreateMemberDiagnosisForTestField(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
+    private IMemberDiagnosis CreateMemberDiagnosisForTestField(IObjectDiagnosisInternal objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestField),
             () => BaseTestField,
             InputCallerDefinitionsForTestField, 

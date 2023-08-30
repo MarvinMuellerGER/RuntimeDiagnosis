@@ -1,10 +1,11 @@
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.TrackableValue;
 using static RuntimeDiagnosis.Kit.GenericEventAttaching;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 
 public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> : 
-    DirectionValueDiagnosis<TOwnerType, TMemberValueType?>, IOutputValueDiagnosis<TOwnerType, TMemberValueType?>
+    DirectionValueDiagnosis<TOwnerType, TMemberValueType?>, IOutputValueDiagnosisInternal<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
     TMemberValueType? IOutputValueDiagnosis<TMemberValueType?>.Value
@@ -21,11 +22,23 @@ public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> :
     
     public bool UpdateOriginalValueWhenDiagnosisActive { get; set; } = true;
 
-    public OutputValueDiagnosis(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
-        IEnumerable<DirectionValueDefinition> callerDefinitions,
-        Action<EventHandler> attachToInputValueChanged) :
-        base(memberDiagnosis, callerDefinitions) =>
+    public OutputValueDiagnosis(
+        IObjectDiagnosesManagerInternal objectDiagnosesManager,
+        IDirectionValueDiagnosesFinder directionValueDiagnosesFinder,
+        ITrackableValueAlwaysEditableInternal<TOwnerType,TMemberValueType?,bool> diagnoseActive,
+        ITrackableValueEditableInternal<TOwnerType, TMemberValueType?, TMemberValueType?> diagnoseValue,
+        ITrackableValueInternal<TOwnerType,TMemberValueType?,TMemberValueType?> originalValue,
+        ITrackableValueInternal<TOwnerType,TMemberValueType?,TMemberValueType?> currentValue) :
+        base(objectDiagnosesManager, directionValueDiagnosesFinder, 
+            diagnoseActive, diagnoseValue, originalValue, currentValue)
+    { }
+
+    public void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
+        IEnumerable<DirectionValueDefinition> callerDefinitions, Action<EventHandler> attachToInputValueChanged)
+    {
+        base.Initialize(memberDiagnosis, callerDefinitions);
         AttachEventHandlers(attachToInputValueChanged);
+    }
 
     private void AttachEventHandlers(Action<EventHandler> attachToInputValueChanged)
     {

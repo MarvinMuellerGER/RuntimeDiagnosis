@@ -8,10 +8,12 @@ using RuntimeDiagnosis.Kit;
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 [DebuggerDisplay("{ToString()} ({ToCurrentValueString()})")]
-public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TOwnerType, TMemberValueType?>
+public sealed class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosisInternal<TOwnerType, TMemberValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    private readonly MemberAccessor<TMemberValueType> _memberAccessor;
+    private readonly IMemberAccessorInternal<TMemberValueType?> _memberAccessor;
+    private readonly IInputValueDiagnosisInternal<TOwnerType, TMemberValueType?> _inputValueDiagnosis;
+    private readonly IOutputValueDiagnosisInternal<TOwnerType, TMemberValueType?> _outputValueDiagnosis;
 
     TMemberValueType? IMemberDiagnosis<TMemberValueType?>.MemberValue
     {
@@ -21,20 +23,23 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
     
     IObjectDiagnosis IMemberDiagnosis.ObjectDiagnosis => ObjectDiagnosis;
 
-    public IObjectDiagnosis<TOwnerType> ObjectDiagnosis { get; }
+    public IObjectDiagnosis<TOwnerType> ObjectDiagnosis { get; private set; } = null!;
+
+    public string MemberName { get; private set; } = null!;
     
-    public string MemberName { get; }
     IInputValueDiagnosis IMemberDiagnosis.InputValueDiagnosis => InputValueDiagnosis;
 
-    IInputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.InputValueDiagnosis => InputValueDiagnosis;
+    IInputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.InputValueDiagnosis => 
+        InputValueDiagnosis;
 
-    public IInputValueDiagnosis<TOwnerType, TMemberValueType?> InputValueDiagnosis { get; }
+    public IInputValueDiagnosis<TOwnerType, TMemberValueType?> InputValueDiagnosis => _inputValueDiagnosis;
 
     IOutputValueDiagnosis IMemberDiagnosis.OutputValueDiagnosis => OutputValueDiagnosis;
 
-    IOutputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.OutputValueDiagnosis => OutputValueDiagnosis;
+    IOutputValueDiagnosis<TMemberValueType?> IMemberDiagnosis<TMemberValueType?>.OutputValueDiagnosis => 
+        OutputValueDiagnosis;
 
-    public IOutputValueDiagnosis<TOwnerType, TMemberValueType?> OutputValueDiagnosis { get; }
+    public IOutputValueDiagnosis<TOwnerType, TMemberValueType?> OutputValueDiagnosis => _outputValueDiagnosis;
 
     IEnumerable<IDirectionValueDiagnosis> IMemberDiagnosis.DirectionValues => DirectionValues;
     
@@ -43,22 +48,13 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
 
     public IEnumerable<IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>> DirectionValues { get; }
 
-    public MemberDiagnosis(in IObjectDiagnosis<TOwnerType> objectDiagnosis,
-        in string memberName,
-        Expression<Func<TMemberValueType?>> memberExpression,
-        IEnumerable<DirectionValueDefinition> inputCallerDefinitions,
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions)
+    public MemberDiagnosis(in IMemberAccessorInternal<TMemberValueType?> memberAccessor,
+        in IInputValueDiagnosisInternal<TOwnerType, TMemberValueType?> inputValueDiagnosis,
+        in IOutputValueDiagnosisInternal<TOwnerType, TMemberValueType?> outputValueDiagnosis)
     {
-        ObjectDiagnosis = objectDiagnosis;
-        MemberName = memberName;
-        _memberAccessor = new MemberAccessor<TMemberValueType>(memberExpression);
-        
-        InputValueDiagnosis = new InputValueDiagnosis<TOwnerType, TMemberValueType?>(
-            this, inputCallerDefinitions);
-        OutputValueDiagnosis = new OutputValueDiagnosis<TOwnerType, TMemberValueType?>(
-            this, outputCallerDefinitions,
-            inputValueChanged => 
-                InputValueDiagnosis.CurrentValue.ValueChangedUnified += inputValueChanged);
+        _memberAccessor = memberAccessor;
+        _inputValueDiagnosis = inputValueDiagnosis;
+        _outputValueDiagnosis = outputValueDiagnosis;
         
         DirectionValues = new IDirectionValueDiagnosis<TOwnerType, TMemberValueType?>[]
         {
@@ -67,6 +63,21 @@ public class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagnosis<TO
         };
     }
     
+    public void Initialize(in IObjectDiagnosis<TOwnerType> objectDiagnosis, in string memberName,
+        Expression<Func<TMemberValueType?>> memberExpression,
+        IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
+        IEnumerable<DirectionValueDefinition> outputCallerDefinitions)
+    {
+        ObjectDiagnosis = objectDiagnosis;
+        MemberName = memberName;
+        
+        _memberAccessor.Initialize(memberExpression);
+        _inputValueDiagnosis.Initialize(this, inputCallerDefinitions);
+        _outputValueDiagnosis.Initialize(this, outputCallerDefinitions, 
+            inputValueChanged =>
+                InputValueDiagnosis.CurrentValue.ValueChangedUnified += inputValueChanged);
+    }
+
     public override string ToString() =>
         $"{this.GetTypeNameWithoutGenericArity()} for {MemberName} of " +
         $"{ObjectDiagnosis.GetOwnerTypeString()}";

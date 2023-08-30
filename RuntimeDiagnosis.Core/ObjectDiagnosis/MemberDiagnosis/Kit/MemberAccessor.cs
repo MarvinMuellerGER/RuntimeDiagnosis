@@ -2,10 +2,24 @@ using System.Linq.Expressions;
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.Kit;
 
-public class MemberAccessor<T>
+public sealed class MemberAccessor<T> : IMemberAccessorInternal<T>
 {
-    private readonly Func<T?> _getter;
-    private readonly Action<T?> _setter;
+    private Func<T?> _getter = null!;
+    private Action<T?> _setter = null!;
+
+    object? IMemberAccessor.Value
+    {
+        get => Value;
+        set
+        {
+            Value = value switch
+            {
+                T valueCasted => valueCasted,
+                null => default,
+                _ => Value
+            };
+        }
+    }
 
     public T? Value
     {
@@ -13,7 +27,7 @@ public class MemberAccessor<T>
         set => _setter(value);
     }
 
-    public MemberAccessor(Expression<Func<T?>> expression)
+    void IMemberAccessorInternal<T>.Initialize(Expression<Func<T?>> expression)
     {
         if (expression.Body is not MemberExpression memberExpression)
             throw new ArgumentException($"{nameof(expression)} must return a field or property");

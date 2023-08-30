@@ -1,14 +1,14 @@
 using System.ComponentModel;
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
+using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
 namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
 
-public partial class TestClassDiagnosable : TestClass, IDiagnosableObject<TestClassDiagnosable>
+public partial class TestClassDiagnosable :
+    TestClass, IDiagnosableObjectInternal<TestClassDiagnosable>
 {
-    private ObjectDiagnosis<TestClassDiagnosable> _objectDiagnosis = null!;
-
-    IObjectDiagnosis IDiagnosableObject.ObjectDiagnosis => ObjectDiagnosis;
-
+    private IObjectDiagnosisInternal<TestClassDiagnosable> _objectDiagnosis = null!;
+    IObjectDiagnosis IDiagnosableObject.ObjectDiagnosis => _objectDiagnosis;
     public IObjectDiagnosis<TestClassDiagnosable> ObjectDiagnosis => _objectDiagnosis;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -16,12 +16,19 @@ public partial class TestClassDiagnosable : TestClass, IDiagnosableObject<TestCl
     public TestClassDiagnosable() => 
         Initialize();
 
-    private void Initialize() => 
-        _objectDiagnosis = 
-            new ObjectDiagnosis<TestClassDiagnosable>(this, InvokePropertyChanged,
-                CreateMemberDiagnosisForTestProperty, 
-                CreateMemberDiagnosisForTestField);
+    private void Initialize()
+    {
+        _objectDiagnosis = ServiceProvider.Instance.GetObjectDiagnosis<TestClassDiagnosable>();
+        _objectDiagnosis.Initialize(this);
+    }
 
-    private void InvokePropertyChanged(string propertyName) => 
+    IEnumerable<Func<IObjectDiagnosisInternal, IMemberDiagnosis>> IDiagnosableObjectInternal.CreateMemberDiagnosisActions =>
+        new[]
+        {
+            CreateMemberDiagnosisForTestProperty,
+            CreateMemberDiagnosisForTestField
+        };
+
+    void IDiagnosableObjectInternal.InvokePropertyChanged(string propertyName) => 
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

@@ -31,7 +31,7 @@ public partial class TestClassDiagnosable
         set => base.TestProperty = value;
     }
 
-    private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(ObjectDiagnosis<TestClassDiagnosable> objectDiagnosis) =>
+    private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(IObjectDiagnosisInternal objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty),
             () => BaseTestProperty, 
             InputCallerDefinitionsForTestProperty, 

@@ -2,10 +2,10 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDi
 
 public class TrackableValueAlwaysEditable<TOwnerType, TMemberValueType, TValueType> : 
     TrackableValue<TOwnerType, TMemberValueType?, TValueType?>, 
-    ITrackableValueAlwaysEditable<TOwnerType, TMemberValueType?, TValueType?>
+    ITrackableValueAlwaysEditableInternal<TOwnerType, TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
-    private bool _editingCurrentlyAllowed;
+    private bool _editingCurrentlyAllowed = true;
     
     public new TValueType? Value
     {
@@ -18,17 +18,15 @@ public class TrackableValueAlwaysEditable<TOwnerType, TMemberValueType, TValueTy
         get => _editingCurrentlyAllowed;
         set => SetField(ref _editingCurrentlyAllowed, value);
     }
-    
-    public TrackableValueAlwaysEditable(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name) : 
-        this(directionValueDiagnosis, name, true)
-    { }
 
-    protected TrackableValueAlwaysEditable(
-        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name, bool editingCurrentlyAllowed) : 
-        base(directionValueDiagnosis, name) =>
+    protected void Initialize(
+        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name, bool editingCurrentlyAllowed)
+    {
+        base.Initialize(directionValueDiagnosis, name);
         _editingCurrentlyAllowed = editingCurrentlyAllowed;
+    }
 
-    public new void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)
+    private new void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)
     {
         if (!EditingCurrentlyAllowed)
             throw new AccessViolationException();

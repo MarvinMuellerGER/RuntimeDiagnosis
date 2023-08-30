@@ -1,16 +1,22 @@
+using RuntimeDiagnosis.Core.ObjectDiagnosis.Kit;
+
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis;
 
-public static class ObjectDiagnosesManager
+public sealed class ObjectDiagnosesManager : IObjectDiagnosesManagerInternal
 {
-    private static readonly List<IObjectDiagnosis> ObjectDiagnosesInternal = new();
+    private readonly IObjectRegistryInternal<IObjectDiagnosis> _objectRegistry;
 
-    public static IEnumerable<IObjectDiagnosis> ObjectDiagnoses => ObjectDiagnosesInternal;
+    public ObjectDiagnosesManager(IObjectRegistryInternal<IObjectDiagnosis> objectRegistry) => 
+        _objectRegistry = objectRegistry;
 
-    public static event EventHandler<IObjectDiagnosis>? NewObjectDiagnoseCreated;
+    public IEnumerable<IObjectDiagnosis> ObjectDiagnoses => _objectRegistry.RegisteredObjects;
 
-    internal static void AddNewObjectDiagnose(IObjectDiagnosis objectDiagnosis)
+    public event EventHandler<IObjectDiagnosis>? NewObjectDiagnoseCreated
     {
-        ObjectDiagnosesInternal.Add(objectDiagnosis);
-        NewObjectDiagnoseCreated?.Invoke(null, objectDiagnosis);
+        add => _objectRegistry.NewObjectRegistered += value;
+        remove => _objectRegistry.NewObjectRegistered -= value;
     }
+
+    void IObjectDiagnosesManagerInternal.AddNewObjectDiagnose(IObjectDiagnosis objectDiagnosis) =>
+        _objectRegistry.RegisterObject(objectDiagnosis);
 }

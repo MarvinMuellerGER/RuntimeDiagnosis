@@ -2,21 +2,26 @@
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
-public static class DirectionValueDiagnosesFinder
+public sealed class DirectionValueDiagnosesFinder : IDirectionValueDiagnosesFinder
 {
-    public static IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
+    private readonly IObjectDiagnosesManagerInternal _objectDiagnosesManager;
+
+    public DirectionValueDiagnosesFinder(IObjectDiagnosesManagerInternal objectDiagnosesManager) => 
+        _objectDiagnosesManager = objectDiagnosesManager;
+
+    public IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
         IEnumerable<DirectionValueDefinition> callerDefinitions)
     {
         var output = new List<IDirectionValueDiagnosis>();
 
-        foreach (var objectDiagnosis in ObjectDiagnosesManager.ObjectDiagnoses)
+        foreach (var objectDiagnosis in _objectDiagnosesManager.ObjectDiagnoses)
             output.AddRange(GetDirectionValuesFromObjectDiagnoseByDefinitions(
                 objectDiagnosis, callerDefinitions));
 
         return output;
     }
 
-    public static IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromObjectDiagnoseByDefinitions(
+    public IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromObjectDiagnoseByDefinitions(
         IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions) =>
         from callerDefinition in callerDefinitions
         where objectDiagnosis.OwnerBaseType == callerDefinition.OwnerType

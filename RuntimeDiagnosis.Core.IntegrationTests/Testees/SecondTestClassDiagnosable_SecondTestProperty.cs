@@ -26,8 +26,7 @@ public partial class SecondTestClassDiagnosable
         set => base.SecondTestProperty = value;
     }
     
-    private IMemberDiagnosis CreateMemberDiagnosisForSecondTestProperty(
-        ObjectDiagnosis<SecondTestClassDiagnosable> objectDiagnosis) =>
+    private IMemberDiagnosis CreateMemberDiagnosisForSecondTestProperty(IObjectDiagnosisInternal objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(SecondTestProperty),
             () => BaseSecondTestProperty,
             InputCallerDefinitionsForSecondTestProperty, 

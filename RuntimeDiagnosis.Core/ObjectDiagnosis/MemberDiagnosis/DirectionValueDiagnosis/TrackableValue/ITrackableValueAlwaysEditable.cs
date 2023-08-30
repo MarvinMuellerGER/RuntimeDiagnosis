@@ -6,7 +6,6 @@ public interface ITrackableValueAlwaysEditable: ITrackableValue
 public interface ITrackableValueAlwaysEditable<TValueType>: ITrackableValueAlwaysEditable, ITrackableValue<TValueType?>
 {
     new TValueType? Value { get; set; }
-    void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false);
 }
 
 public interface ITrackableValueAlwaysEditable<TMemberValueType, TValueType> : 

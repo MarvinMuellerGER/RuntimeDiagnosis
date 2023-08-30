@@ -8,7 +8,7 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDi
 
 [DebuggerDisplay($"{{ToString()}} ({{ToShortCurrentValueString()}})")]
 public class TrackableValue<TOwnerType, TMemberValueType, TValueType> : 
-    ITrackableValue<TOwnerType, TMemberValueType?, TValueType?>
+    ITrackableValueInternal<TOwnerType, TMemberValueType?, TValueType?>
     where TOwnerType : IDiagnosableObject
 {
     private TValueType? _value;
@@ -16,14 +16,16 @@ public class TrackableValue<TOwnerType, TMemberValueType, TValueType> :
     private ushort _setCalledCount;
     private ushort _changedCount;
     private EventHandler<object?>? _valueChangedHandler;
-    
-    public string Name { get; }
 
     IDirectionValueDiagnosis ITrackableValue.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
-    IDirectionValueDiagnosis<TMemberValueType?> ITrackableValue<TMemberValueType?, TValueType?>.DirectionValueDiagnosis => DirectionValueDiagnosis;
+    IDirectionValueDiagnosis<TMemberValueType?> 
+        ITrackableValue<TMemberValueType?, TValueType?>.DirectionValueDiagnosis => DirectionValueDiagnosis;
 
-    public IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; }
+    public IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> DirectionValueDiagnosis { get; private set; }
+        = null!;
+    
+    public string Name { get; private set; } = null!;
 
     object? ITrackableValue.Value => Value;
 
@@ -69,17 +71,24 @@ public class TrackableValue<TOwnerType, TMemberValueType, TValueType> :
     
     public event EventHandler? ValueChangedUnified;
 
-    public TrackableValue(IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name)
+    void ITrackableValueInternal<TOwnerType, TMemberValueType?, TValueType?>.Initialize(
+        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name) =>
+        Initialize(directionValueDiagnosis, name);
+
+    protected void Initialize(
+        IDirectionValueDiagnosis<TOwnerType, TMemberValueType?> directionValueDiagnosis, string name)
     {
         DirectionValueDiagnosis = directionValueDiagnosis;
         Name = name;
         AttachEventHandlers();
     }
     
-    public static bool operator ==(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) =>
+    public static bool operator ==(
+        TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) =>
         obj1.Equals(obj2);
 
-    public static bool operator !=(TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) => 
+    public static bool operator !=(
+        TrackableValue<TOwnerType, TMemberValueType, TValueType> obj1, ITrackableValue? obj2) => 
         !(obj1 == obj2);
     
     public static bool operator ==(
@@ -129,7 +138,10 @@ public class TrackableValue<TOwnerType, TMemberValueType, TValueType> :
     public string ToShortCurrentValueString() =>
         $"{nameof(Value)}: {_value}";
 
-    internal void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)
+    void ITrackableValueInternal<TValueType?>.SetValue(TValueType? value, bool setAgainEvenIfNotChanged) =>
+        SetValue(value, setAgainEvenIfNotChanged);
+    
+    protected void SetValue(TValueType? value, bool setAgainEvenIfNotChanged = false)
     {
         SetCalledCount++;
         if (SetField(ref _value, value, setAgainEvenIfNotChanged, nameof(Value)))

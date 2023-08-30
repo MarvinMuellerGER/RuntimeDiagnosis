@@ -8,8 +8,8 @@ public interface IDiagnosableObject : INotifyPropertyChanged
     public IObjectDiagnosis ObjectDiagnosis { get; }
 }
 
-public interface IDiagnosableObject<TOwnerType> : IDiagnosableObject 
-    where TOwnerType : IDiagnosableObject
+public interface IDiagnosableObject<TOwnerType> : IDiagnosableObject
+    where TOwnerType : IDiagnosableObject<TOwnerType>
 {
     public new IObjectDiagnosis<TOwnerType> ObjectDiagnosis { get; }
 }
