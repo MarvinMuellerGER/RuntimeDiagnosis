@@ -2,7 +2,7 @@ using System.ComponentModel;
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 
-namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
+namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public partial class SecondTestClassDiagnosable :
     SecondTestClass, IDiagnosableObjectInternal<SecondTestClassDiagnosable>

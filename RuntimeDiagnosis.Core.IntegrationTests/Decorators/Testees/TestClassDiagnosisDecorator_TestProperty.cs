@@ -1,39 +1,31 @@
-using JetBrains.Annotations;
 using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis.ValueDirectionType;
 
-namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
+namespace RuntimeDiagnosis.Core.IntegrationTests.Decorators.Testees;
 
-public partial class TestClassDiagnosable
+public partial class TestClassDiagnosisDecorator
 {
     private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty))
+        new DirectionValueDefinition(typeof(ISecondTestClass), nameof(ISecondTestClass.SecondTestProperty))
     };
     
     private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty), Output)
+        new DirectionValueDefinition(typeof(ISecondTestClass), nameof(ISecondTestClass.SecondTestProperty), Output)
     };
 
-    public new bool TestProperty
+    public bool TestProperty
     {
-        get => _objectDiagnosis.GetMemberValue(() => BaseTestProperty);
-        set => _objectDiagnosis.SetMemberValue(() => BaseTestProperty, value);
-    }
-
-    private bool BaseTestProperty
-    {
-        get => base.TestProperty;
-        [UsedImplicitly]
-        set => base.TestProperty = value;
+        get => _objectDiagnosis.GetMemberValue(() => _testClass.TestProperty);
+        set => _objectDiagnosis.SetMemberValue(() => _testClass.TestProperty, value);
     }
 
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(IObjectDiagnosisInternal objectDiagnosis) =>
         objectDiagnosis.CreateMemberDiagnosis(nameof(TestProperty),
-            () => BaseTestProperty, 
+            () => _testClass.TestProperty, 
             InputCallerDefinitionsForTestProperty, 
             OutputCallerDefinitionsForTestProperty);
 }

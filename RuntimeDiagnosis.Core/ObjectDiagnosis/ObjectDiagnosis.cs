@@ -21,7 +21,7 @@ public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwne
     
     public TOwnerType Owner { get; private set; } = default!;
 
-    public Type OwnerBaseType => Owner.GetType().BaseType ?? Owner.GetType();
+    public Type OwnerBaseType { get; private set; } = typeof(TOwnerType);
 
     [DebuggerDisplay($"{nameof(MemberDiagnoses)} for {{GetOwnerTypeString()}}")]
     public IEnumerable<IMemberDiagnosis> MemberDiagnoses { get; private set; } = null!;
@@ -33,6 +33,7 @@ public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwne
     public void Initialize(TOwnerType owner)
     {
         Owner = owner;
+        SetOwnerBaseType();
         MemberDiagnoses = owner.CreateMemberDiagnosisActions
             .Select(createMemberDiagnose => createMemberDiagnose(this)).ToList();
         _invokeOwnerPropertyChanged = owner.InvokePropertyChanged;
@@ -83,4 +84,9 @@ public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwne
 #pragma warning restore CS1066
         where TMemberValueType : default =>
         GetMemberDiagnose<TMemberValueType?>(memberName)!.InputValueDiagnosis.Value = value;
+
+    private void SetOwnerBaseType() =>
+        OwnerBaseType = typeof(TOwnerType).BaseType == typeof(object)
+            ? typeof(TOwnerType).GetInterfaces()[1]
+            : typeof(TOwnerType).BaseType ?? typeof(TOwnerType);
 }

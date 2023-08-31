@@ -1,8 +1,8 @@
-using RuntimeDiagnosis.Core.IntegrationTests.Testees;
+using RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis;
 using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.IDirectionValueDiagnosis.ValueDirectionType;
 
-namespace RuntimeDiagnosis.Core.IntegrationTests;
+namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses;
 
 public class JustCalledEventTests
 {

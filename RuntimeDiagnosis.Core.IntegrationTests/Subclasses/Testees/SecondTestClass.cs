@@ -1,4 +1,4 @@
-﻿namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
+﻿namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public class SecondTestClass
 {

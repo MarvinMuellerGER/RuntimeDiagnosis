@@ -3,7 +3,7 @@ using RuntimeDiagnosis.Core.ObjectDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis;
 using RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
-namespace RuntimeDiagnosis.Core.IntegrationTests.Testees;
+namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public partial class TestClassDiagnosable
 {
