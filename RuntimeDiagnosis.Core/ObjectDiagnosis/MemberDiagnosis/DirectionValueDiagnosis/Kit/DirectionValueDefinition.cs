@@ -3,6 +3,8 @@ using static RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValu
 
 namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDiagnosis.Kit;
 
-// TODO: Write Summaries
-public readonly record struct DirectionValueDefinition(
-    Type OwnerType, string MemberName, ValueDirectionType ValueDirection = Input);
+public readonly record struct DirectionValueDefinition<TOwnerType>(
+    string MemberName, ValueDirectionType ValueDirection = Input) : IDirectionValueDefinition
+{
+    public Type OwnerType { get; } = typeof(TOwnerType);
+}

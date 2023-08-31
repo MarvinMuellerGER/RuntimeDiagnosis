@@ -11,7 +11,7 @@ public sealed class DirectionValueDiagnosesFinder : IDirectionValueDiagnosesFind
         _objectDiagnosesManager = objectDiagnosesManager;
 
     public IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
-        IEnumerable<DirectionValueDefinition> callerDefinitions)
+        IEnumerable<IDirectionValueDefinition> callerDefinitions)
     {
         var output = new List<IDirectionValueDiagnosis>();
 
@@ -23,7 +23,7 @@ public sealed class DirectionValueDiagnosesFinder : IDirectionValueDiagnosesFind
     }
 
     public IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromObjectDiagnoseByDefinitions(
-        IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions) =>
+        IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<IDirectionValueDefinition> callerDefinitions) =>
         from callerDefinition in callerDefinitions
         where objectDiagnosis.OwnerBaseType == callerDefinition.OwnerType
         from memberDiagnosis in objectDiagnosis.MemberDiagnoses

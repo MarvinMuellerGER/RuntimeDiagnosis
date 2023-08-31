@@ -29,7 +29,7 @@ public sealed class InputValueDiagnosis<TOwnerType, TMemberValueType> :
     { }
 
     public new void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis,
-        IEnumerable<DirectionValueDefinition> callerDefinitions) =>
+        IEnumerable<IDirectionValueDefinition> callerDefinitions) =>
         base.Initialize(memberDiagnosis, callerDefinitions);
 
     protected override void SetCurrentValue(TMemberValueType? value, bool setAgainEvenIfNotChanged = false)

@@ -11,8 +11,8 @@ public interface IObjectDiagnosisInternal : IObjectDiagnosis
     IMemberDiagnosis CreateMemberDiagnosis<TMemberValueType>(
         in string memberName,
         Expression<Func<TMemberValueType?>> memberExpression,
-        IEnumerable<DirectionValueDefinition> inputCallerDefinitions,
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions);
+        IEnumerable<IDirectionValueDefinition> inputCallerDefinitions,
+        IEnumerable<IDirectionValueDefinition> outputCallerDefinitions);
 
     public TMemberValueType? GetMemberValue<TMemberValueType>(
         in Expression<Func<TMemberValueType?>> memberExpression,

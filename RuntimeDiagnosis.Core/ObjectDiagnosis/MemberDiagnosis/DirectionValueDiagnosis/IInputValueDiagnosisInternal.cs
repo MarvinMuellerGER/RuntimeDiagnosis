@@ -8,5 +8,5 @@ public interface IInputValueDiagnosisInternal<TOwnerType, TMemberValueType> :
     where TOwnerType : IDiagnosableObject
 {
     internal void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
-        IEnumerable<DirectionValueDefinition> callerDefinitions);
+        IEnumerable<IDirectionValueDefinition> callerDefinitions);
 }

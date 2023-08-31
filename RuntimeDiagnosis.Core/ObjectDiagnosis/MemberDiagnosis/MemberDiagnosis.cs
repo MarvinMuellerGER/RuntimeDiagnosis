@@ -66,8 +66,8 @@ public sealed class MemberDiagnosis<TOwnerType, TMemberValueType> : IMemberDiagn
     
     public void Initialize(in IObjectDiagnosis<TOwnerType> objectDiagnosis, in string memberName,
         Expression<Func<TMemberValueType?>> memberExpression,
-        IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions)
+        IEnumerable<IDirectionValueDefinition> inputCallerDefinitions, 
+        IEnumerable<IDirectionValueDefinition> outputCallerDefinitions)
     {
         ObjectDiagnosis = objectDiagnosis;
         MemberName = memberName;

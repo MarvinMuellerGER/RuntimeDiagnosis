@@ -35,7 +35,7 @@ public sealed class OutputValueDiagnosis<TOwnerType, TMemberValueType> :
     { }
 
     public void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
-        IEnumerable<DirectionValueDefinition> callerDefinitions, Action<EventHandler> attachToInputValueChanged)
+        IEnumerable<IDirectionValueDefinition> callerDefinitions, Action<EventHandler> attachToInputValueChanged)
     {
         base.Initialize(memberDiagnosis, callerDefinitions);
         AttachEventHandlers(attachToInputValueChanged);

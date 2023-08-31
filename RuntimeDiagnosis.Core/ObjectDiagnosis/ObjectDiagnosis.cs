@@ -60,8 +60,8 @@ public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwne
     IMemberDiagnosis IObjectDiagnosisInternal.CreateMemberDiagnosis<TMemberValueType>(
         in string memberName,
         Expression<Func<TMemberValueType?>> memberExpression, 
-        IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions) where TMemberValueType : default
+        IEnumerable<IDirectionValueDefinition> inputCallerDefinitions, 
+        IEnumerable<IDirectionValueDefinition> outputCallerDefinitions) where TMemberValueType : default
     {
         var memberDiagnosis = ServiceProvider.Instance.GetMemberDiagnosis<TOwnerType, TMemberValueType>();
         memberDiagnosis.Initialize(

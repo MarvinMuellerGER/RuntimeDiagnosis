@@ -9,6 +9,6 @@ public interface IMemberDiagnosisInternal<TOwnerType, TMemberValueType> : IMembe
 {
     internal void Initialize(in IObjectDiagnosis<TOwnerType> objectDiagnosis, in string memberName,
         Expression<Func<TMemberValueType?>> memberExpression,
-        IEnumerable<DirectionValueDefinition> inputCallerDefinitions, 
-        IEnumerable<DirectionValueDefinition> outputCallerDefinitions);
+        IEnumerable<IDirectionValueDefinition> inputCallerDefinitions, 
+        IEnumerable<IDirectionValueDefinition> outputCallerDefinitions);
 }

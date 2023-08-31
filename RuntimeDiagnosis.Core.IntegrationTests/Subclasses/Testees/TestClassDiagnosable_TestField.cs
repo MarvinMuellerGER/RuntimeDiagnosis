@@ -7,11 +7,11 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public partial class TestClassDiagnosable
 {
-    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestField = 
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> InputCallerDefinitionsForTestField = 
+        Enumerable.Empty<IDirectionValueDefinition>();
     
-    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestField = 
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> OutputCallerDefinitionsForTestField = 
+        Enumerable.Empty<IDirectionValueDefinition>();
 
     public new bool TestField
     {

@@ -7,14 +7,16 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Decorators.Testees;
 
 public partial class TestClassDiagnosisDecorator
 {
-    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
+    private static readonly IEnumerable<IDirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(ISecondTestClass), nameof(ISecondTestClass.SecondTestProperty))
+        (IDirectionValueDefinition)new DirectionValueDefinition<ISecondTestClass>(
+            nameof(ISecondTestClass.SecondTestProperty))
     };
     
-    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
+    private static readonly IEnumerable<IDirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(ISecondTestClass), nameof(ISecondTestClass.SecondTestProperty), Output)
+        (IDirectionValueDefinition)new DirectionValueDefinition<ISecondTestClass>(
+            nameof(ISecondTestClass.SecondTestProperty), Output)
     };
 
     public bool TestProperty

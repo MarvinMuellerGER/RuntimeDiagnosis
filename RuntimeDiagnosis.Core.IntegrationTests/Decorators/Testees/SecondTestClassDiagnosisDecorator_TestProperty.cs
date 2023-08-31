@@ -6,11 +6,11 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Decorators.Testees;
 
 public partial class SecondTestClassDiagnosisDecorator
 {
-    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty =
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty =
+        Enumerable.Empty<IDirectionValueDefinition>();
     
-    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty =
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty =
+        Enumerable.Empty<IDirectionValueDefinition>();
 
     public bool SecondTestProperty
     {

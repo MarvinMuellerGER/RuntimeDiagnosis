@@ -6,8 +6,8 @@ namespace RuntimeDiagnosis.Core.ObjectDiagnosis.MemberDiagnosis.DirectionValueDi
 public interface IDirectionValueDiagnosesFinder
 {
     IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromKnownObjectDiagnosesByDefinitions(
-        IEnumerable<DirectionValueDefinition> callerDefinitions);
+        IEnumerable<IDirectionValueDefinition> callerDefinitions);
 
     IEnumerable<IDirectionValueDiagnosis> GetDirectionValuesFromObjectDiagnoseByDefinitions(
-        IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<DirectionValueDefinition> callerDefinitions);
+        IObjectDiagnosis objectDiagnosis, [NoEnumeration] IEnumerable<IDirectionValueDefinition> callerDefinitions);
 }

@@ -8,14 +8,16 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public partial class TestClassDiagnosable
 {
-    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
+    private static readonly IEnumerable<IDirectionValueDefinition> InputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty))
+        (IDirectionValueDefinition)new DirectionValueDefinition<SecondTestClass>(
+            nameof(SecondTestClass.SecondTestProperty))
     };
     
-    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
+    private static readonly IEnumerable<IDirectionValueDefinition> OutputCallerDefinitionsForTestProperty = new[]
     {
-        new DirectionValueDefinition(typeof(SecondTestClass), nameof(SecondTestClass.SecondTestProperty), Output)
+        (IDirectionValueDefinition)new DirectionValueDefinition<SecondTestClass>(
+            nameof(SecondTestClass.SecondTestProperty), Output)
     };
 
     public new bool TestProperty

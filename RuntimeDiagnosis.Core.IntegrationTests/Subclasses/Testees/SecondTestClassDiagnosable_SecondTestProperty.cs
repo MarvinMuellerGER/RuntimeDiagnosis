@@ -7,11 +7,11 @@ namespace RuntimeDiagnosis.Core.IntegrationTests.Subclasses.Testees;
 
 public partial class SecondTestClassDiagnosable
 {
-    private static readonly IEnumerable<DirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty = 
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> InputCallerDefinitionsForSecondTestProperty = 
+        Enumerable.Empty<IDirectionValueDefinition>();
     
-    private static readonly IEnumerable<DirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty = 
-        Array.Empty<DirectionValueDefinition>();
+    private static readonly IEnumerable<IDirectionValueDefinition> OutputCallerDefinitionsForSecondTestProperty = 
+        Enumerable.Empty<IDirectionValueDefinition>();
     
     public new bool SecondTestProperty
     {

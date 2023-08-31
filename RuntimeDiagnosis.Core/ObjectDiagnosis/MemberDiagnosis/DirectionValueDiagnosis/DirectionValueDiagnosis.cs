@@ -16,7 +16,7 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> :
     private readonly IObjectDiagnosesManagerInternal _objectDiagnosesManager;
     private readonly IDirectionValueDiagnosesFinder _directionValueDiagnosesFinder;
     private readonly List<IDirectionValueDiagnosis> _callers = new();
-    private List<DirectionValueDefinition> _callerDefinitions = null!;
+    private List<IDirectionValueDefinition> _callerDefinitions = null!;
     private readonly ITrackableValueAlwaysEditableInternal<TOwnerType, TMemberValueType?, bool> _diagnoseActive;
     private readonly ITrackableValueEditableInternal<TOwnerType, TMemberValueType?, TMemberValueType?> _diagnoseValue;
     private readonly ITrackableValueInternal<TOwnerType, TMemberValueType?, TMemberValueType?> _currentValueInternal;
@@ -95,7 +95,7 @@ public abstract class DirectionValueDiagnosis<TOwnerType, TMemberValueType> :
     }
 
     protected void Initialize(IMemberDiagnosis<TOwnerType, TMemberValueType?> memberDiagnosis, 
-        IEnumerable<DirectionValueDefinition> callerDefinitions)
+        IEnumerable<IDirectionValueDefinition> callerDefinitions)
     {
         MemberDiagnosis = memberDiagnosis;
         
