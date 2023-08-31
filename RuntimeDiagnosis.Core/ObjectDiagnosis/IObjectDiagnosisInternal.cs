@@ -14,12 +14,9 @@ public interface IObjectDiagnosisInternal : IObjectDiagnosis
         IEnumerable<IDirectionValueDefinition> inputCallerDefinitions,
         IEnumerable<IDirectionValueDefinition> outputCallerDefinitions);
 
-    public TMemberValueType? GetMemberValue<TMemberValueType>(
-        in Expression<Func<TMemberValueType?>> memberExpression,
-        [CallerMemberName] string memberName = "");
+    public TMemberValueType? GetMemberValue<TMemberValueType>([CallerMemberName] string memberName = "");
 
-    public void SetMemberValue<TMemberValueType>(in Expression<Func<TMemberValueType?>> memberExpression,
-        in TMemberValueType? value, [CallerMemberName] string memberName = "");
+    public void SetMemberValue<TMemberValueType>(in TMemberValueType? value, [CallerMemberName] string memberName = "");
 }
 
 public interface IObjectDiagnosisInternal<TOwnerType> : IObjectDiagnosis<TOwnerType>, IObjectDiagnosisInternal

@@ -15,8 +15,8 @@ public partial class TestClassDiagnosable
 
     public new bool TestField
     {
-        get => _objectDiagnosis.GetMemberValue(() => BaseTestField);
-        set => _objectDiagnosis.SetMemberValue(() => BaseTestField, value);
+        get => _objectDiagnosis.GetMemberValue<bool>();
+        set => _objectDiagnosis.SetMemberValue(value);
     }
 
     private bool BaseTestField

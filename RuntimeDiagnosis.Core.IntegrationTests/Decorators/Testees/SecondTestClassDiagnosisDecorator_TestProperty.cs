@@ -14,8 +14,8 @@ public partial class SecondTestClassDiagnosisDecorator
 
     public bool SecondTestProperty
     {
-        get => _objectDiagnosis.GetMemberValue(() => _secondTestClass.SecondTestProperty);
-        set => _objectDiagnosis.SetMemberValue(() => _secondTestClass.SecondTestProperty, value);
+        get => _objectDiagnosis.GetMemberValue<bool>();
+        set => _objectDiagnosis.SetMemberValue(value);
     }
 
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(IObjectDiagnosisInternal objectDiagnosis) =>

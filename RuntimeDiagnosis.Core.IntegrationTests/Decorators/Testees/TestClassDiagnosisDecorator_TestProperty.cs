@@ -21,8 +21,8 @@ public partial class TestClassDiagnosisDecorator
 
     public bool TestProperty
     {
-        get => _objectDiagnosis.GetMemberValue(() => _testClass.TestProperty);
-        set => _objectDiagnosis.SetMemberValue(() => _testClass.TestProperty, value);
+        get => _objectDiagnosis.GetMemberValue<bool>();
+        set => _objectDiagnosis.SetMemberValue(value);
     }
 
     private IMemberDiagnosis CreateMemberDiagnosisForTestProperty(IObjectDiagnosisInternal objectDiagnosis) =>

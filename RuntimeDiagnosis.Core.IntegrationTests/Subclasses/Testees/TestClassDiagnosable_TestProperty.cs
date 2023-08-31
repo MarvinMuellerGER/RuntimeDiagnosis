@@ -22,8 +22,8 @@ public partial class TestClassDiagnosable
 
     public new bool TestProperty
     {
-        get => _objectDiagnosis.GetMemberValue(() => BaseTestProperty);
-        set => _objectDiagnosis.SetMemberValue(() => BaseTestProperty, value);
+        get => _objectDiagnosis.GetMemberValue<bool>();
+        set => _objectDiagnosis.SetMemberValue(value);
     }
 
     private bool BaseTestProperty
