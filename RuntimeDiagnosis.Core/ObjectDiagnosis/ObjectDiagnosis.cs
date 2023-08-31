@@ -69,17 +69,11 @@ public sealed class ObjectDiagnosis<TOwnerType> : IObjectDiagnosisInternal<TOwne
         return memberDiagnosis;
     }
 
-    TMemberValueType? IObjectDiagnosisInternal.GetMemberValue<TMemberValueType>(
-#pragma warning disable CS1066
-        [CallerMemberName] string memberName = "")
-#pragma warning restore CS1066
+    TMemberValueType? IObjectDiagnosisInternal.GetMemberValue<TMemberValueType>(string memberName)
         where TMemberValueType : default =>
         GetMemberDiagnose<TMemberValueType>(memberName)!.OutputValueDiagnosis.Value;
     
-    void IObjectDiagnosisInternal.SetMemberValue<TMemberValueType>(in TMemberValueType? value,
-#pragma warning disable CS1066
-        [CallerMemberName] string memberName = "")
-#pragma warning restore CS1066
+    void IObjectDiagnosisInternal.SetMemberValue<TMemberValueType>(in TMemberValueType? value, string memberName)
         where TMemberValueType : default =>
         GetMemberDiagnose<TMemberValueType?>(memberName)!.InputValueDiagnosis.Value = value;
 
