@@ -44,16 +44,14 @@ public class MemberAccessorTests
     }
 
     [Test]
-    public void ValueSetter_SetsValue_CorrectlyRetrieved()
+    [TestCase("New Value")]
+    [TestCase(null)]
+    public void ValueSetter_SetsValue_CorrectlyRetrieved(string newValue)
     {
-        // Arrange
-        const string newValue = "New Value";
-
         // Act
         _accessor.Value = newValue;
 
         // Assert
-        Assert.That(TestProperty, Is.Not.Null);
         Assert.That(TestProperty, Is.EqualTo(newValue));
     }
 
